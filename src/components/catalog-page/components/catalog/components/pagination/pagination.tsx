@@ -9,7 +9,7 @@ function Pagination({pageNumber, currentPage}: PageNumberProps): JSX.Element {
       <div></div>
     );
   } else {
-    const pages = new Array(pageNumber);
+    const pages = new Array(pageNumber).fill(null);
 
     return (
       <div className="pagination page-content__pagination">
