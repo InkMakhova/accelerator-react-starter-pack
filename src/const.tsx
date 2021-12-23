@@ -3,3 +3,5 @@ export enum AppRoute {
   WhereToBuy = '/where-to-buy',
   AboutUs = 'about-us',
 }
+
+export const PRODUCT_NUMBER_ON_PAGE = 9;
