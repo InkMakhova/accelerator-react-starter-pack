@@ -1,7 +1,8 @@
 export enum AppRoute {
   Root = '/',
   WhereToBuy = '/where-to-buy',
-  AboutUs = 'about-us',
+  AboutUs = '/about-us',
+  NotFoundPage = '/page-not-found'
 }
 
 export enum APIRoute {
