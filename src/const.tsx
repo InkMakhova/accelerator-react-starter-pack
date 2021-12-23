@@ -4,4 +4,8 @@ export enum AppRoute {
   AboutUs = 'about-us',
 }
 
+export enum APIRoute {
+  Guitars = '/Guitars',
+}
+
 export const PRODUCT_NUMBER_ON_PAGE = 9;

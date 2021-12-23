@@ -2,8 +2,12 @@ import Header from '../common/header/header';
 import Footer from '../common/footer/footer';
 import BreadCrumbs from '../common/bread-crumbs/bread-crumbs';
 import Catalog from './components/catalog/catalog';
+import {getGuitars} from '../../store/guitar-data/selectors';
+import {useSelector} from 'react-redux';
 
 function CatalogPage(): JSX.Element {
+  const guitars = useSelector(getGuitars);
+
   return (
     <div className="wrapper">
       <Header />
@@ -12,7 +16,7 @@ function CatalogPage(): JSX.Element {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <BreadCrumbs />
-          <Catalog />
+          <Catalog guitars={guitars}/>
         </div>
       </main>
 
