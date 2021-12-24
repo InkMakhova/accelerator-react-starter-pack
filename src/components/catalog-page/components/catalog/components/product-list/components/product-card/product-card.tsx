@@ -1,11 +1,13 @@
 import {Guitar} from '../../../../../../../../types/guitar';
+import {Link} from 'react-router-dom';
+import {AppRoute} from '../../../../../../../../const';
 
 type ProductCardProps = {
   guitar: Guitar;
 }
 
 function ProductCard({guitar}: ProductCardProps): JSX.Element {
-  const {name, previewImg, rating, price} = guitar;
+  const {id, name, previewImg, rating, price} = guitar;
 
   return (
     <div className="product-card">
@@ -33,8 +35,17 @@ function ProductCard({guitar}: ProductCardProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini" href="#">Подробнее</a>
-        <a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+        <Link className="button button--mini" to={`${AppRoute.Guitars}${id}`}>Подробнее</Link>
+        <Link
+          className="button button--red button--mini button--add-to-cart"
+          to={AppRoute.Cart}
+          onClick={(evt) => {
+            evt.preventDefault();
+            /*eslint-disable-next-line no-console*/
+            console.log('Show popup');
+          }}
+        >Купить
+        </Link>
       </div>
     </div>
   );

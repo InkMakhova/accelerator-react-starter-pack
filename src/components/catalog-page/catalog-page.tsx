@@ -4,6 +4,9 @@ import BreadCrumbs from '../common/bread-crumbs/bread-crumbs';
 import Catalog from './components/catalog/catalog';
 import {getGuitars} from '../../store/guitar-data/selectors';
 import {useSelector} from 'react-redux';
+import {Page} from '../../const';
+
+document.title = Page.Catalog;
 
 function CatalogPage(): JSX.Element {
   const guitars = useSelector(getGuitars);
