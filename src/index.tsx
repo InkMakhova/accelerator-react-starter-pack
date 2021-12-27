@@ -4,7 +4,6 @@ import App from './components/app/app';
 import {createAPI} from './services/api';
 import {configureStore} from '@reduxjs/toolkit';
 import {rootReducer} from './store/root-reducer';
-import {fetchGuitarsAction} from './store/api-actions';
 import {Provider} from 'react-redux';
 
 const api = createAPI();
@@ -18,8 +17,6 @@ export const store = configureStore({
       },
     }),
 });
-
-store.dispatch(fetchGuitarsAction());
 
 ReactDOM.render(
   <React.StrictMode>

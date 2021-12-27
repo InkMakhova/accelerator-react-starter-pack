@@ -2,13 +2,19 @@ import Header from '../common/header/header';
 import Footer from '../common/footer/footer';
 import BreadCrumbs from '../common/bread-crumbs/bread-crumbs';
 import Catalog from './components/catalog/catalog';
-import {getGuitars} from '../../store/guitar-data/selectors';
+import {getGuitars, getStart} from '../../store/guitar-data/selectors';
 import {useSelector} from 'react-redux';
 import {Page} from '../../const';
+import {fetchGuitarsAction} from '../../store/api-actions';
+import {store} from '../../index';
 
 document.title = Page.Catalog;
 
 function CatalogPage(): JSX.Element {
+  const start = useSelector(getStart);
+
+  store.dispatch(fetchGuitarsAction(start));
+
   const guitars = useSelector(getGuitars);
 
   return (

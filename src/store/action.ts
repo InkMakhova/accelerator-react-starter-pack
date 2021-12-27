@@ -8,3 +8,10 @@ export const loadGuitars = createAction(
     payload: guitars,
   }),
 );
+
+export const updateTotal = createAction(
+  ActionType.UpdateTotal,
+  (total: number) => ({
+    payload: total,
+  }),
+);
