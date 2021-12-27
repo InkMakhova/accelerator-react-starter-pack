@@ -7,13 +7,17 @@ import {useSelector} from 'react-redux';
 import {Page} from '../../const';
 import {fetchGuitarsAction} from '../../store/api-actions';
 import {store} from '../../index';
+import {useEffect} from 'react';
 
 document.title = Page.Catalog;
 
 function CatalogPage(): JSX.Element {
+
   const start = useSelector(getStart);
 
-  store.dispatch(fetchGuitarsAction(start));
+  useEffect(() => {
+    store.dispatch(fetchGuitarsAction(start));
+  }, [start]);
 
   const guitars = useSelector(getGuitars);
 
