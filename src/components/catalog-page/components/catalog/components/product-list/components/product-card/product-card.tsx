@@ -11,7 +11,7 @@ function ProductCard({guitar}: ProductCardProps): JSX.Element {
 
   return (
     <div className="product-card">
-      <img src={`/${previewImg}`} width="75" height="190" alt={name}/>
+      <img src={previewImg} width="75" height="190" alt={name}/>
       <div className="product-card__info">
         <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
           <svg width="12" height="11" aria-hidden="true">
