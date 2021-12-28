@@ -16,4 +16,4 @@ export enum APIRoute {
   Guitars = '/Guitars',
 }
 
-export const PRODUCT_NUMBER_ON_PAGE = 9;
+export const ITEMS_PER_PAGE = 9;
