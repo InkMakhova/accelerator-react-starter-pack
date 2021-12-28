@@ -17,3 +17,13 @@ export enum APIRoute {
 }
 
 export const ITEMS_PER_PAGE = 9;
+
+export enum Sort {
+  Price = 'price',
+  Rating = 'rating',
+}
+
+export enum Order {
+  Asc = 'Asc',
+  Desc = 'Desc',
+}
