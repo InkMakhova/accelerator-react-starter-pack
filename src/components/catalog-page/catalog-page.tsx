@@ -8,7 +8,6 @@ import {Order, Page, Sort as SortType} from '../../const';
 import {fetchGuitarsAction} from '../../store/api-actions';
 import {store} from '../../index';
 import {useEffect} from 'react';
-import {FetchGuitarsParams} from '../../types/fetch-guitars-params';
 import {useQuery} from '../../hooks/use-query';
 
 document.title = Page.Catalog;
@@ -21,15 +20,9 @@ function CatalogPage(): JSX.Element {
   const sort = query.get('_sort') && query.get('_sort') as SortType ? query.get('_sort') : SortType.Price;
   const order = query.get('_order') && query.get('_order') as Order ? query.get('_order') : Order.Asc;
 
-  const fetchParams: FetchGuitarsParams = {
-    start: start,
-    sort: sort,
-    order: order,
-  };
-
   useEffect(() => {
-    store.dispatch(fetchGuitarsAction(fetchParams));
-  }, Object.values(fetchParams));
+    store.dispatch(fetchGuitarsAction({start, sort, order}));
+  }, [start, sort, order]);
 
   const guitars = useSelector(getGuitars);
 
