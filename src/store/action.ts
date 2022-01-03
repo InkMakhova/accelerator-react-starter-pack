@@ -9,6 +9,20 @@ export const loadGuitars = createAction(
   }),
 );
 
+export const loadPriceMin = createAction(
+  ActionType.LoadPriceMin,
+  (guitar: Guitar) => ({
+    payload: guitar,
+  }),
+);
+
+export const loadPriceMax = createAction(
+  ActionType.LoadPriceMax,
+  (guitar: Guitar) => ({
+    payload: guitar,
+  }),
+);
+
 export const loadSearchSuggestions = createAction(
   ActionType.LoadSearchSuggestions,
   (searchSuggestions: Guitar[]) => ({

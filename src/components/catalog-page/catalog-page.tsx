@@ -5,7 +5,7 @@ import Catalog from './components/catalog/catalog';
 import {getGuitars, getStart} from '../../store/guitar-data/selectors';
 import {useSelector} from 'react-redux';
 import {Order, Page, PRICE_MAX, PRICE_MIN, Sort as SortType} from '../../const';
-import {fetchGuitarsAction} from '../../store/api-actions';
+import {fetchGuitarByAsc, fetchGuitarByDesc, fetchGuitarsAction} from '../../store/api-actions';
 import {store} from '../../index';
 import {useEffect} from 'react';
 import {useQuery} from '../../hooks/use-query';
@@ -23,6 +23,8 @@ function CatalogPage(): JSX.Element {
   const order = query.get('_order') && query.get('_order') as Order ? query.get('_order') : Order.Asc;
 
   useEffect(() => {
+    store.dispatch(fetchGuitarByAsc());
+    store.dispatch(fetchGuitarByDesc());
     store.dispatch(fetchGuitarsAction({priceMin, priceMax, start, sort, order}));
   }, [priceMin, priceMax, start, sort, order]);
 
