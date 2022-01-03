@@ -1,6 +1,16 @@
 import {useQuery} from '../../../../../../hooks/use-query';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useState} from 'react';
+import {useSelector} from 'react-redux';
+import {getPriceMax, getPriceMin} from '../../../../../../store/guitar-data/selectors';
+// import {URLSearchParams} from 'url';
+
+// type queryParams = {
+//   minPrice: number,
+//   maxPrice: number,
+//   types: [],
+//   strings: [],
+// }
 
 function Filter(): JSX.Element {
   const query = useQuery();
@@ -9,8 +19,28 @@ function Filter(): JSX.Element {
 
   const history = useHistory();
 
+  const theCheapestPrice = useSelector(getPriceMin);
+  const theMostExpensivePrice = useSelector(getPriceMax);
+
   const [priceMin, setPriceMin] = useState(query.get('price_gte'));
   const [priceMax, setPriceMax] = useState(query.get('price_lte'));
+
+  /*eslint-disable-next-line no-console*/
+  console.log(query.getAll('type[]'));
+  //const [type, setType] = useState(query.get('type'));
+
+  // const getQuery = (params: queryParams): string => {
+  //   const {minPrice, maxPrice, types, strings} = params;
+  //
+  //   const queryParams = new URLSearchParams({
+  //     'price_gte': String(minPrice),
+  //     'price_lte': String(maxPrice),
+  //     'type': types,
+  //     'stringCount': strings,
+  //   });
+  //
+  //   return queryParams.toString();
+  // };
 
   return (
     <form className="catalog-filter">
@@ -22,15 +52,29 @@ function Filter(): JSX.Element {
             <label className="visually-hidden">Минимальная цена</label>
             <input
               type="number"
-              placeholder="1 000"
+              placeholder={String(theCheapestPrice)}
               id="priceMin"
               name="от"
               onChange={(evt) => {
-                const newPriceMin = evt.target.value;
-                query.set('price_gte', newPriceMin ? newPriceMin : '');
-                location.search = query.toString();
-                history.push(`/?${location.search}`);
-                setPriceMin(newPriceMin);
+                setPriceMin(evt.target.value);
+              }}
+              onBlur={(evt) => {
+                if (Number(evt.target.value) < 0 || Number(evt.target.value) < theCheapestPrice) {
+                  setPriceMin(String(theCheapestPrice));
+                  query.set('price_gte', String(theCheapestPrice));
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                } else if (Number(evt.target.value) > Number(priceMax)) {
+                  setPriceMin(String(priceMax));
+                  query.set('price_gte', String(priceMax));
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                } else {
+                  setPriceMin(evt.target.value);
+                  query.set('price_gte', evt.target.value);
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                }
               }}
               value={priceMin ? priceMin : ''}
             />
@@ -39,7 +83,7 @@ function Filter(): JSX.Element {
             <label className="visually-hidden">Максимальная цена</label>
             <input
               type="number"
-              placeholder="30 000"
+              placeholder={String(theMostExpensivePrice)}
               id="priceMax"
               name="до"
               onChange={(evt) => {
@@ -48,6 +92,24 @@ function Filter(): JSX.Element {
                 location.search = query.toString();
                 history.push(`/?${location.search}`);
                 setPriceMax(newPriceMax);
+              }}
+              onBlur={(evt) => {
+                if (Number(evt.target.value) < 0 || Number(evt.target.value) > theMostExpensivePrice) {
+                  setPriceMax(String(theMostExpensivePrice));
+                  query.set('price_lte', String(theMostExpensivePrice));
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                } else if (Number(evt.target.value) < Number(priceMin)) {
+                  setPriceMax(String(priceMin));
+                  query.set('price_lte', String(priceMin));
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                } else {
+                  setPriceMax(evt.target.value);
+                  query.set('price_lte', evt.target.value);
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                }
               }}
               value={priceMax ? priceMax : ''}
             />
