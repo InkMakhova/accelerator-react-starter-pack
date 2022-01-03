@@ -1,10 +1,12 @@
 import {useState} from 'react';
 import {Order, Sort as SortType} from '../../../../../../const';
 import {useQuery} from '../../../../../../hooks/use-query';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 
 function Sort(): JSX.Element {
   const query = useQuery();
+
+  const location = useLocation();
 
   const history = useHistory();
 
@@ -21,10 +23,9 @@ function Sort(): JSX.Element {
           tabIndex={sort === SortType.Price ? -1 : 0}
           onClick={() => {
             setSort(SortType.Price);
-            if (!query.get('sort')) {
-              history.push(`?_sort=${SortType.Price}&_order=${order}`);
-            }
-            query.set('sort', SortType.Price);
+            query.set('_sort', SortType.Price);
+            location.search = query.toString();
+            history.push(`/?${location.search}`);
           }}
         >по цене
         </button>
@@ -34,10 +35,9 @@ function Sort(): JSX.Element {
           tabIndex={sort === SortType.Rating ? -1 : 0}
           onClick={() => {
             setSort(SortType.Rating);
-            if (!query.get('sort')) {
-              history.push(`?_sort=${SortType.Rating}&_order=${order}`);
-            }
-            query.set('sort', SortType.Rating);
+            query.set('_sort', SortType.Rating);
+            location.search = query.toString();
+            history.push(`/?${location.search}`);
           }}
         >
           по популярности
@@ -50,10 +50,9 @@ function Sort(): JSX.Element {
           tabIndex={order === Order.Asc ? -1 : 0}
           onClick={() => {
             setOrder(Order.Asc);
-            if (!query.get('order')) {
-              history.push(`?_sort=${sort}&_order=${Order.Asc}`);
-            }
-            query.set('order', Order.Asc);
+            query.set('_order', Order.Asc);
+            location.search = query.toString();
+            history.push(`/?${location.search}`);
           }}
         >
         </button>
@@ -63,10 +62,9 @@ function Sort(): JSX.Element {
           tabIndex={order === Order.Desc ? -1 : 0}
           onClick={() => {
             setOrder(Order.Desc);
-            if (!query.get('order')) {
-              history.push(`?_sort=${sort}&_order=${Order.Desc}`);
-            }
-            query.set('order', Order.Desc);
+            query.set('_order', Order.Desc);
+            location.search = query.toString();
+            history.push(`/?${location.search}`);
           }}
         >
         </button>
