@@ -3,14 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {getPriceMax, getPriceMin} from '../../../../../../store/guitar-data/selectors';
-// import {URLSearchParams} from 'url';
-
-// type queryParams = {
-//   minPrice: number,
-//   maxPrice: number,
-//   types: [],
-//   strings: [],
-// }
+import {Type} from '../../../../../../const';
 
 function Filter(): JSX.Element {
   const query = useQuery();
@@ -25,22 +18,22 @@ function Filter(): JSX.Element {
   const [priceMin, setPriceMin] = useState(query.get('price_gte'));
   const [priceMax, setPriceMax] = useState(query.get('price_lte'));
 
-  /*eslint-disable-next-line no-console*/
-  console.log(query.getAll('type[]'));
-  //const [type, setType] = useState(query.get('type'));
+  const [type, setType] = useState(query.getAll('type[]'));
 
-  // const getQuery = (params: queryParams): string => {
-  //   const {minPrice, maxPrice, types, strings} = params;
-  //
-  //   const queryParams = new URLSearchParams({
-  //     'price_gte': String(minPrice),
-  //     'price_lte': String(maxPrice),
-  //     'type': types,
-  //     'stringCount': strings,
-  //   });
-  //
-  //   return queryParams.toString();
-  // };
+  const handleChangeType = (guitarType: string) => {
+    if (!type.includes(guitarType)) {
+      query.append('type[]', guitarType);
+      location.search = query.toString();
+      history.push(`/?${location.search}`);
+    } else {
+      const newTypeList = query.getAll('type[]').filter((element) => element !== guitarType);
+      query.delete('type[]');
+      newTypeList.forEach((typeItem) => query.append('type[]', typeItem));
+      location.search = query.toString();
+      history.push(`/?${location.search}`);
+    }
+    setType(query.getAll('type[]'));
+  };
 
   return (
     <form className="catalog-filter">
@@ -59,19 +52,31 @@ function Filter(): JSX.Element {
                 setPriceMin(evt.target.value);
               }}
               onBlur={(evt) => {
-                if (Number(evt.target.value) < 0 || Number(evt.target.value) < theCheapestPrice) {
+                const newPriceMin = evt.target.value;
+
+                if (Number(newPriceMin) < theCheapestPrice && newPriceMin !== '') {
                   setPriceMin(String(theCheapestPrice));
                   query.set('price_gte', String(theCheapestPrice));
                   location.search = query.toString();
                   history.push(`/?${location.search}`);
-                } else if (Number(evt.target.value) > Number(priceMax)) {
+                } else if (Number(newPriceMin) > theMostExpensivePrice) {
+                  setPriceMin(String(theMostExpensivePrice));
+                  query.set('price_gte', String(theMostExpensivePrice));
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                } else if (Number(priceMax) && Number(newPriceMin) > Number(priceMax)) {
                   setPriceMin(String(priceMax));
                   query.set('price_gte', String(priceMax));
                   location.search = query.toString();
                   history.push(`/?${location.search}`);
-                } else {
-                  setPriceMin(evt.target.value);
-                  query.set('price_gte', evt.target.value);
+                } else if (newPriceMin === '') {
+                  setPriceMin('');
+                  query.delete('price_gte');
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                } else{
+                  setPriceMin(newPriceMin);
+                  query.set('price_gte', newPriceMin);
                   location.search = query.toString();
                   history.push(`/?${location.search}`);
                 }
@@ -87,26 +92,34 @@ function Filter(): JSX.Element {
               id="priceMax"
               name="до"
               onChange={(evt) => {
-                const newPriceMax = evt.target.value;
-                query.set('price_lte', newPriceMax ? newPriceMax : '');
-                location.search = query.toString();
-                history.push(`/?${location.search}`);
-                setPriceMax(newPriceMax);
+                setPriceMax(evt.target.value);
               }}
               onBlur={(evt) => {
-                if (Number(evt.target.value) < 0 || Number(evt.target.value) > theMostExpensivePrice) {
+                const newPriceMax = evt.target.value;
+
+                if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
                   setPriceMax(String(theMostExpensivePrice));
                   query.set('price_lte', String(theMostExpensivePrice));
                   location.search = query.toString();
                   history.push(`/?${location.search}`);
-                } else if (Number(evt.target.value) < Number(priceMin)) {
+                } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
+                  setPriceMax(String(theCheapestPrice));
+                  query.set('price_lte', String(theCheapestPrice));
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
+                } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
                   setPriceMax(String(priceMin));
                   query.set('price_lte', String(priceMin));
                   location.search = query.toString();
                   history.push(`/?${location.search}`);
+                } else if (newPriceMax === '') {
+                  setPriceMax('');
+                  query.delete('price_lte');
+                  location.search = query.toString();
+                  history.push(`/?${location.search}`);
                 } else {
-                  setPriceMax(evt.target.value);
-                  query.set('price_lte', evt.target.value);
+                  setPriceMax(newPriceMax);
+                  query.set('price_lte', newPriceMax);
                   location.search = query.toString();
                   history.push(`/?${location.search}`);
                 }
@@ -119,15 +132,36 @@ function Filter(): JSX.Element {
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic"/>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="acoustic"
+            name="acoustic"
+            defaultChecked={type.includes(Type.Acoustic)}
+            onChange={() => handleChangeType(Type.Acoustic)}
+          />
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="electric" name="electric"/>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="electric"
+            name="electric"
+            defaultChecked={type.includes(Type.Electric)}
+            onChange={() => handleChangeType(Type.Electric)}
+          />
           <label htmlFor="electric">Электрогитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele"/>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="ukulele"
+            name="ukulele"
+            defaultChecked={type.includes(Type.Ukulele)}
+            onChange={() => handleChangeType(Type.Ukulele)}
+          />
           <label htmlFor="ukulele">Укулеле</label>
         </div>
       </fieldset>

@@ -1,7 +1,10 @@
 export type FetchGuitarsParams = {
-  priceMin?: string | null | undefined,
+  priceMin?: string | null,
   priceMax?: string | null,
-  start?: number,
+  start?: string | null,
   sort?: string | null,
   order?: string | null,
+  types?: string[] | null,
+  stringsCount?: string[],
+  limit: string;
 }

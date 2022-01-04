@@ -28,5 +28,12 @@ export enum Order {
   Desc = 'Desc',
 }
 
+export enum Type {
+  Acoustic= 'acoustic',
+  Electric = 'electric',
+  Ukulele = 'ukulele',
+}
+
+export const START_ITEM = 0;
 export const PRICE_MIN = 0;
-export const PRICE_MAX = Infinity;
+export const PRICE_MAX = 0;
