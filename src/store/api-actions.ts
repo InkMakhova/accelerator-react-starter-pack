@@ -14,7 +14,7 @@ export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResul
       priceMin,
       priceMax,
       types,
-      //stringsCount,
+      stringCount,
       limit,
     } = queryParams;
 
@@ -28,9 +28,9 @@ export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResul
     if (types && types.length !== 0) {
       types.forEach((el: string) => urlQueryParams.append('type[]', el));
     }
-    // if (stringsCount && stringsCount.length !== 0) {
-    //   stringsCount.forEach((el: string) => urlQueryParams.append('stringsCount[]', el));
-    // }
+    if (stringCount && stringCount.length !== 0) {
+      stringCount.forEach((el: string) => urlQueryParams.append('stringCount[]', el));
+    }
     if (sort) {
       urlQueryParams.append('_sort', sort);
     }

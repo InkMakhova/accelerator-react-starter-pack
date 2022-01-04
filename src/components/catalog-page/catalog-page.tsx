@@ -22,13 +22,10 @@ function CatalogPage(): JSX.Element {
   const sort = query.get('_sort') && query.get('_sort') as SortType ? query.get('_sort') : SortType.Price;
   const order = query.get('_order') && query.get('_order') as Order ? query.get('_order') : Order.Asc;
   const types = query.getAll('type[]').length !== 0 ? query.getAll('type[]') : [];
+  const stringCount = query.getAll('stringCount[]').length !== 0 ? query.getAll('stringCount[]') : [];
+  const limit = String(ITEMS_PER_PAGE);
 
-  const typesRef = useRef(types);
-  if (arraysNotEqual(typesRef.current, types)) {
-    typesRef.current = types;
-  }
-
-  function arraysNotEqual(prev: string[], next: string[]) {
+  const arraysNotEqual = (prev: string[], next: string[]) => {
     if (prev.length !== next.length) {
       return true;
     }
@@ -39,15 +36,23 @@ function CatalogPage(): JSX.Element {
       }
     }
     return false;
+  };
+
+  const typesRef = useRef(types);
+  if (arraysNotEqual(typesRef.current, types)) {
+    typesRef.current = types;
   }
 
-  const limit = String(ITEMS_PER_PAGE);
+  const stringsCountRef = useRef(stringCount);
+  if (arraysNotEqual(stringsCountRef.current, stringCount)) {
+    stringsCountRef.current = stringCount;
+  }
 
   useEffect(() => {
     store.dispatch(fetchGuitarByAsc());
     store.dispatch(fetchGuitarByDesc());
-    store.dispatch(fetchGuitarsAction({priceMin, priceMax, types, sort, order, start, limit}));
-  }, [priceMin, priceMax, typesRef.current, sort, order, start, limit]);
+    store.dispatch(fetchGuitarsAction({priceMin, priceMax, types, sort, order, start, limit, stringCount}));
+  }, [priceMin, priceMax, typesRef.current, stringsCountRef.current, sort, order, start, limit]);
 
   const guitars = useSelector(getGuitars);
 
