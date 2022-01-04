@@ -3,7 +3,6 @@ import {loadGuitars, loadPriceMax, loadPriceMin, loadSearchSuggestions, updateTo
 import {APIRoute, PRICE_MAX, PRICE_MIN} from '../const';
 import {Guitar} from '../types/guitar';
 import {FetchGuitarsParams} from '../types/fetch-guitars-params';
-//import {URLSearchParams} from 'url';
 
 export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResult => {
 
