@@ -10,6 +10,8 @@ import {State} from '../types/state';
 
 export enum ActionType {
   LoadGuitars = 'data/loadGuitars',
+  LoadPriceMin = 'data/loadPriceMin',
+  LoadPriceMax = 'data/loadPriceMax',
   UpdateTotal = 'data/updateTotal',
   LoadSearchSuggestions = 'data/loadSearchSuggestions',
 }

@@ -27,3 +27,19 @@ export enum Order {
   Asc = 'Asc',
   Desc = 'Desc',
 }
+
+export enum Type {
+  Acoustic= 'acoustic',
+  Electric = 'electric',
+  Ukulele = 'ukulele',
+}
+
+export enum StringCount {
+  Four = 4,
+  Six = 6,
+  Seven = 7,
+  Twelve = 12,
+}
+
+export const PRICE_MIN = 0;
+export const PRICE_MAX = 0;
