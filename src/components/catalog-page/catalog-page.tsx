@@ -51,7 +51,8 @@ function CatalogPage(): JSX.Element {
   useEffect(() => {
     store.dispatch(fetchGuitarByAsc());
     store.dispatch(fetchGuitarByDesc());
-    store.dispatch(fetchGuitarsAction({priceMin, priceMax, types, sort, order, start, limit, stringCount}));
+    store.dispatch(fetchGuitarsAction({priceMin, priceMax, types: typesRef.current, sort, order, start, limit, stringCount: stringsCountRef.current}));
+    /*eslint-disable-next-line*/
   }, [priceMin, priceMax, typesRef.current, stringsCountRef.current, sort, order, start, limit]);
 
   const guitars = useSelector(getGuitars);
