@@ -4,13 +4,13 @@ import BreadCrumbs from '../common/bread-crumbs/bread-crumbs';
 import Catalog from './components/catalog/catalog';
 import {getGuitars, getStart} from '../../store/guitar-data/selectors';
 import {useSelector} from 'react-redux';
-import {ITEMS_PER_PAGE, Order, Page, PRICE_MAX, PRICE_MIN, Sort as SortType} from '../../const';
+import {ITEMS_PER_PAGE, Order, PageTitle, PRICE_MAX, PRICE_MIN, Sort as SortType} from '../../const';
 import {fetchGuitarByAsc, fetchGuitarByDesc, fetchGuitarsAction} from '../../store/api-actions';
 import {store} from '../../index';
 import {useEffect, useRef} from 'react';
 import {useQuery} from '../../hooks/use-query';
 
-document.title = Page.Catalog;
+document.title = PageTitle.Catalog;
 
 function CatalogPage(): JSX.Element {
 
