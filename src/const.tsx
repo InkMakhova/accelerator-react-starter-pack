@@ -1,10 +1,12 @@
-export enum Page {
+export enum PageTitle {
   Catalog = 'Guitar-shop',
   Cart = 'Корзина — Guitar-shop',
 }
 
 export enum AppRoute {
   Root = '/',
+  Catalog = '/catalog',
+  Page = '/page_',
   Cart = '/cart',
   WhereToBuy = '/where-to-buy',
   AboutUs = '/about-us',
