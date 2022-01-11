@@ -19,36 +19,39 @@ function Filter(): JSX.Element {
   const [priceMax, setPriceMax] = useState(query.get('price_lte'));
 
   const [type, setType] = useState(query.getAll('type[]'));
-  const [stringsCount, setStringsCount] = useState(query.getAll('stringsCount[]'));
+  const [stringCount, setStringCount] = useState(query.getAll('stringCount[]'));
+
+  /*eslint-disable-next-line no-console*/
+  console.log(stringCount);
 
   const handleChangeType = (guitarType: string) => {
     if (!type.includes(guitarType)) {
       query.append('type[]', guitarType);
       location.search = query.toString();
-      history.push(`/?${location.search}`);
+      history.push(`${location.pathname}?${location.search}`);
     } else {
       const newTypeList = query.getAll('type[]').filter((element) => element !== guitarType);
       query.delete('type[]');
       newTypeList.forEach((typeItem) => query.append('type[]', typeItem));
       location.search = query.toString();
-      history.push(`/?${location.search}`);
+      history.push(`${location.pathname}?${location.search}`);
     }
     setType(query.getAll('type[]'));
   };
 
   const handleChangeStringsCount = (stringsNumber: string) => {
-    if (!stringsCount.includes(stringsNumber)) {
+    if (!stringCount.includes(stringsNumber)) {
       query.append('stringCount[]', stringsNumber);
       location.search = query.toString();
-      history.push(`/?${location.search}`);
+      history.push(`${location.pathname}?${location.search}`);
     } else {
       const newStringsCountList = query.getAll('stringCount[]').filter((element) => element !== stringsNumber);
       query.delete('stringCount[]');
       newStringsCountList.forEach((item) => query.append('stringCount[]', item));
       location.search = query.toString();
-      history.push(`/?${location.search}`);
+      history.push(`${location.pathname}?${location.search}`);
     }
-    setStringsCount(query.getAll('stringCount[]'));
+    setStringCount(query.getAll('stringCount[]'));
   };
 
   return (
@@ -189,6 +192,7 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="4-strings"
             name="4-strings"
+            defaultChecked={stringCount.includes(String(StringCount.Four))}
             onChange={() => handleChangeStringsCount(String(StringCount.Four))}
             disabled={!type.includes(Type.Ukulele) && !type.includes(Type.Electric) && type.includes(Type.Acoustic)}
           />
@@ -200,6 +204,7 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="6-strings"
             name="6-strings"
+            defaultChecked={stringCount.includes(String(StringCount.Six))}
             onChange={() => handleChangeStringsCount(String(StringCount.Six))}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
@@ -211,6 +216,7 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="7-strings"
             name="7-strings"
+            defaultChecked={stringCount.includes(String(StringCount.Seven))}
             onChange={() => handleChangeStringsCount(String(StringCount.Seven))}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
@@ -222,6 +228,7 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="12-strings"
             name="12-strings"
+            defaultChecked={stringCount.includes(String(StringCount.Twelve))}
             onChange={() => handleChangeStringsCount(String(StringCount.Twelve))}
             disabled={(type.includes(Type.Ukulele) || type.includes(Type.Electric)) && !type.includes(Type.Acoustic)}
           />

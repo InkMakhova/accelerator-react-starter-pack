@@ -1,5 +1,7 @@
 import {Guitar} from '../../../../../../types/guitar';
 import ProductCard from './components/product-card/product-card';
+import {useQuery} from '../../../../../../hooks/use-query';
+import {useHistory, useLocation} from 'react-router-dom';
 
 type ItemListProps = {
   guitars: Guitar[],
@@ -7,6 +9,10 @@ type ItemListProps = {
 }
 
 function ProductList({guitars, guitarCount}: ItemListProps): JSX.Element {
+  const query = useQuery();
+  const location = useLocation();
+  const history = useHistory();
+
   if (guitars && guitars.length > 0) {
     const cards = guitars.length <= guitarCount ? guitars : guitars.slice(0, guitarCount);
 
@@ -20,8 +26,21 @@ function ProductList({guitars, guitarCount}: ItemListProps): JSX.Element {
     );
   }
   return (
-    <div className="cards catalog__cards">
-      <p>There is no data about guitars</p>
+    <div>
+      <p>По вашим параметрам ничего не найдено. Попробуйте сбросить фильтры.</p>
+      <button
+        style={{cursor: 'pointer', color: '#c90606', border: 'none', background: 'transparent'}}
+        onClick={(evt) => {
+          evt.preventDefault();
+          query.delete('type[]');
+          query.delete('price_gte');
+          query.delete('price_lte');
+          query.delete('stringCount[]');
+          location.search = query.toString();
+          history.push(`${location.pathname}?${location.search}`);
+        }}
+      >Сбросить фильтры
+      </button>
     </div>
   );
 }
