@@ -20,6 +20,8 @@ export enum APIRoute {
 
 export const ITEMS_PER_PAGE = 9;
 
+export const PAGINATION_STEP = 3;
+
 export enum Sort {
   Price = 'price',
   Rating = 'rating',

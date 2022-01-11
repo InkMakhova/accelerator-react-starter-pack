@@ -2,23 +2,39 @@ import Header from '../common/header/header';
 import Footer from '../common/footer/footer';
 import BreadCrumbs from '../common/bread-crumbs/bread-crumbs';
 import Catalog from './components/catalog/catalog';
-import {getGuitars, getStart} from '../../store/guitar-data/selectors';
+import {getGuitars} from '../../store/guitar-data/selectors';
 import {useSelector} from 'react-redux';
 import {ITEMS_PER_PAGE, Order, PageTitle, PRICE_MAX, PRICE_MIN, Sort as SortType} from '../../const';
 import {fetchGuitarByAsc, fetchGuitarByDesc, fetchGuitarsAction} from '../../store/api-actions';
 import {store} from '../../index';
 import {useEffect, useRef} from 'react';
 import {useQuery} from '../../hooks/use-query';
+import {useLocation} from 'react-router-dom';
 
 document.title = PageTitle.Catalog;
 
 function CatalogPage(): JSX.Element {
 
   const query = useQuery();
+  const location = useLocation();
+
+  let page = 1;
+
+  if (location.pathname.includes('page_')) {
+    const splitPath = location.pathname
+      .split('/')[location.pathname
+        .split('/').length-1];
+
+    page = Number(splitPath[splitPath.length-1]
+      .split('_')[splitPath[splitPath.length-1]
+        .split('_').length-1]);
+  } else {
+    page = 1;
+  }
 
   const priceMin = query.get('price_gte') ? query.get('price_gte') : String(PRICE_MIN);
   const priceMax = query.get('price_lte') ? query.get('price_lte') : String(PRICE_MAX);
-  const start = String(useSelector(getStart));
+  const start = String((page-1) * ITEMS_PER_PAGE);
   const sort = query.get('_sort') && query.get('_sort') as SortType ? query.get('_sort') : SortType.Price;
   const order = query.get('_order') && query.get('_order') as Order ? query.get('_order') : Order.Asc;
   const types = query.getAll('type[]').length !== 0 ? query.getAll('type[]') : [];

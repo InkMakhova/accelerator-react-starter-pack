@@ -19,6 +19,7 @@ export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResul
     } = queryParams;
 
     const urlQueryParams = new URLSearchParams('');
+
     if (priceMin && priceMin !== String(PRICE_MIN)) {
       urlQueryParams.append('price_gte', priceMin);
     }

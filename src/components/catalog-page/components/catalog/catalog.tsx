@@ -15,7 +15,7 @@ function Catalog({guitars}: CatalogProps): JSX.Element {
       <Filter />
       <Sort />
       <ProductList guitars={guitars} guitarCount={ITEMS_PER_PAGE} />
-      <Pagination pageNumber={3} currentPage={1} />
+      <Pagination />
     </div>
   );
 }
