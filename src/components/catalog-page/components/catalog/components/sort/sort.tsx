@@ -1,7 +1,8 @@
-import {useState} from 'react';
-import {Order, Sort as SortType} from '../../../../../../const';
-import {useQuery} from '../../../../../../hooks/use-query';
-import {useHistory, useLocation} from 'react-router-dom';
+import { useState } from 'react';
+import { Order, Sort as SortType } from '../../../../../../const';
+import { useQuery } from '../../../../../../hooks/use-query';
+import { useHistory, useLocation } from 'react-router-dom';
+import { getNewPathname } from '../../../../../../util';
 
 function Sort(): JSX.Element {
   const query = useQuery();
@@ -13,6 +14,14 @@ function Sort(): JSX.Element {
   const [sort, setSort] = useState(Object.values(SortType).includes(query.get('_sort') as SortType) ? query.get('_sort') : SortType.Price);
   const [order, setOrder] = useState(Object.values(Order).includes(query.get('_order') as Order) ? query.get('_order') : Order.Asc);
 
+  const onClickHandler = (setState: React.Dispatch<React.SetStateAction<string | null>>, sortType: string, searchParam: string) => {
+    setState(sortType);
+    query.set(searchParam, sortType);
+    location.pathname = getNewPathname(location.pathname);
+    location.search = query.toString();
+    history.push(`${location.pathname}?${location.search}`);
+  };
+
   return (
     <div className="catalog-sort">
       <h2 className="catalog-sort__title">Сортировать:</h2>
@@ -22,10 +31,7 @@ function Sort(): JSX.Element {
           aria-label="по цене"
           tabIndex={sort === SortType.Price ? -1 : 0}
           onClick={() => {
-            setSort(SortType.Price);
-            query.set('_sort', SortType.Price);
-            location.search = query.toString();
-            history.push(`/?${location.search}`);
+            onClickHandler(setSort, SortType.Price, '_sort');
           }}
         >по цене
         </button>
@@ -34,10 +40,7 @@ function Sort(): JSX.Element {
           aria-label="по популярности"
           tabIndex={sort === SortType.Rating ? -1 : 0}
           onClick={() => {
-            setSort(SortType.Rating);
-            query.set('_sort', SortType.Rating);
-            location.search = query.toString();
-            history.push(`/?${location.search}`);
+            onClickHandler(setSort, SortType.Rating, '_sort');
           }}
         >
           по популярности
@@ -49,10 +52,7 @@ function Sort(): JSX.Element {
           aria-label="По возрастанию"
           tabIndex={order === Order.Asc ? -1 : 0}
           onClick={() => {
-            setOrder(Order.Asc);
-            query.set('_order', Order.Asc);
-            location.search = query.toString();
-            history.push(`/?${location.search}`);
+            onClickHandler(setOrder, Order.Asc, '_order');
           }}
         >
         </button>
@@ -61,10 +61,7 @@ function Sort(): JSX.Element {
           aria-label="По убыванию"
           tabIndex={order === Order.Desc ? -1 : 0}
           onClick={() => {
-            setOrder(Order.Desc);
-            query.set('_order', Order.Desc);
-            location.search = query.toString();
-            history.push(`/?${location.search}`);
+            onClickHandler(setOrder, Order.Desc, '_order');
           }}
         >
         </button>
