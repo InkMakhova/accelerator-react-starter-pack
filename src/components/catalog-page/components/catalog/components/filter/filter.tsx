@@ -22,18 +22,21 @@ function Filter(): JSX.Element {
   const [type, setType] = useState(query.getAll('type[]'));
   const [stringCount, setStringCount] = useState(query.getAll('stringCount[]'));
 
+  const changeURL = () => {
+    location.pathname = removePageFromLocation(location.pathname);
+    location.search = query.toString();
+    history.push(`${location.pathname}?${location.search}`);
+  };
+
   const onChangeFilterHandler = (state: string[], setState: React.Dispatch<React.SetStateAction<string[]>>, filterType: string, queryParam: string) => {
     if (!state.includes(filterType)) {
       query.append(queryParam, filterType);
-      location.pathname = removePageFromLocation(location.pathname);
-      location.search = query.toString();
-      history.push(`${location.pathname}?${location.search}`);
+      changeURL();
     } else {
       const newFilterList = query.getAll(queryParam).filter((element) => element !== filterType);
       query.delete(queryParam);
       newFilterList.forEach((filter) => query.append(queryParam, (filter)));
-      location.search = query.toString();
-      history.push(`${location.pathname}?${location.search}`);
+      changeURL();
     }
     setState(query.getAll(queryParam));
   };
@@ -60,28 +63,23 @@ function Filter(): JSX.Element {
                 if (Number(newPriceMin) < theCheapestPrice && newPriceMin !== '') {
                   setPriceMin(String(theCheapestPrice));
                   query.set('price_gte', String(theCheapestPrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else if (Number(newPriceMin) > theMostExpensivePrice) {
                   setPriceMin(String(theMostExpensivePrice));
                   query.set('price_gte', String(theMostExpensivePrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else if (Number(priceMax) && Number(newPriceMin) > Number(priceMax)) {
                   setPriceMin(String(priceMax));
                   query.set('price_gte', String(priceMax));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else if (newPriceMin === '') {
                   setPriceMin('');
                   query.delete('price_gte');
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else{
                   setPriceMin(newPriceMin);
                   query.set('price_gte', newPriceMin);
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 }
               }}
               value={priceMin ? priceMin : ''}
@@ -103,28 +101,23 @@ function Filter(): JSX.Element {
                 if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
                   setPriceMax(String(theMostExpensivePrice));
                   query.set('price_lte', String(theMostExpensivePrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
                   setPriceMax(String(theCheapestPrice));
                   query.set('price_lte', String(theCheapestPrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
                   setPriceMax(String(priceMin));
                   query.set('price_lte', String(priceMin));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else if (newPriceMax === '') {
                   setPriceMax('');
                   query.delete('price_lte');
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 } else {
                   setPriceMax(newPriceMax);
                   query.set('price_lte', newPriceMax);
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  changeURL();
                 }
               }}
               value={priceMax ? priceMax : ''}
