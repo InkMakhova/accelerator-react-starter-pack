@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { getTotal } from '../../../../../../store/guitar-data/selectors';
-import {AppRoute, ITEMS_PER_PAGE, PAGINATION_STEP} from '../../../../../../const';
+import { AppRoute, ITEMS_PER_PAGE, PAGINATION_STEP } from '../../../../../../const';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -76,24 +76,28 @@ function Pagination(): JSX.Element {
     }
   };
 
-  return (
-    <div className="pagination page-content__pagination">
-      <ul className="pagination__list">
-        {isPrevButton ?
-          <li className="pagination__page pagination__page--prev" id="prev">
-            <a className="link pagination__page-link" href="1">
-              Назад
-            </a>
-          </li> : ''}
-        {getPagination()}
-        {isNextButton ?
-          <li className="pagination__page pagination__page--next" id="next">
-            <a className="link pagination__page-link" href="2">
-              Назад
-            </a>
-          </li> : ''}
-      </ul>
-    </div>
-  );
+  if (totalPageNumber === 0) {
+    return <div className="pagination page-content__pagination"></div>;
+  } else {
+    return (
+      <div className="pagination page-content__pagination">
+        <ul className="pagination__list">
+          {isPrevButton ?
+            <li className="pagination__page pagination__page--prev" id="prev">
+              <a className="link pagination__page-link" href="1">
+                Назад
+              </a>
+            </li> : ''}
+          {getPagination()}
+          {isNextButton ?
+            <li className="pagination__page pagination__page--next" id="next">
+              <a className="link pagination__page-link" href="2">
+                Назад
+              </a>
+            </li> : ''}
+        </ul>
+      </div>
+    );
+  }
 }
 export default Pagination;
