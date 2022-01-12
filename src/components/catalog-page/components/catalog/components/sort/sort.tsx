@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Order, Sort as SortType } from '../../../../../../const';
 import { useQuery } from '../../../../../../hooks/use-query';
 import { useHistory, useLocation } from 'react-router-dom';
-import { getNewPathname } from '../../../../../../util';
+import { removePageFromLocation } from '../../../../../../util';
 
 function Sort(): JSX.Element {
   const query = useQuery();
@@ -17,7 +17,7 @@ function Sort(): JSX.Element {
   const onClickHandler = (setState: React.Dispatch<React.SetStateAction<string | null>>, sortType: string, searchParam: string) => {
     setState(sortType);
     query.set(searchParam, sortType);
-    location.pathname = getNewPathname(location.pathname);
+    location.pathname = removePageFromLocation(location.pathname);
     location.search = query.toString();
     history.push(`${location.pathname}?${location.search}`);
   };

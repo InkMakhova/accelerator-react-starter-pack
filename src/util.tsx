@@ -1,6 +1,6 @@
 import {AppRoute} from './const';
 
-export const getNewPathname = (locationPath: string): string => {
+export const removePageFromLocation = (locationPath: string): string => {
   if (locationPath.includes(AppRoute.Page)) {
     const splitPathname = locationPath.split('/');
     const page = splitPathname[splitPathname.length - 1];
