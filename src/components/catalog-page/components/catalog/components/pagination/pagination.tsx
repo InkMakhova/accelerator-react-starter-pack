@@ -10,19 +10,19 @@ function Pagination(): JSX.Element {
   const totalGuitarNumber = useSelector(getTotal);
   const totalPageNumber = Math.ceil(totalGuitarNumber / ITEMS_PER_PAGE);
 
-  let currentPage = 1;
+  const getCurrentPage = (): number => {
+    if (location.pathname.includes(AppRoute.Page)) {
+      const splitPath = location.pathname
+        .split('/')[location.pathname.split('/').length-1];
 
-  if (location.pathname.includes('page_')) {
-    const splitPath = location.pathname
-      .split('/')[location.pathname
-        .split('/').length-1];
+      return Number(splitPath[splitPath.length-1]
+        .split('_')[splitPath[splitPath.length-1].split('_').length-1]);
+    } else {
+      return 1;
+    }
+  };
 
-    currentPage = Number(splitPath[splitPath.length-1]
-      .split('_')[splitPath[splitPath.length-1]
-        .split('_').length-1]);
-  } else {
-    currentPage = 1;
-  }
+  const currentPage = getCurrentPage();
 
   const position = Math.ceil(currentPage / PAGINATION_STEP);
   const positionStart = position * PAGINATION_STEP - (PAGINATION_STEP - 1);
@@ -84,16 +84,20 @@ function Pagination(): JSX.Element {
         <ul className="pagination__list">
           {isPrevButton ?
             <li className="pagination__page pagination__page--prev" id="prev">
-              <a className="link pagination__page-link" href="1">
-                Назад
-              </a>
+              <Link
+                className="link pagination__page-link"
+                to={`${AppRoute.Catalog}${AppRoute.Page}${positionStart - 1}${location.search}`}
+              >Назад
+              </Link>
             </li> : ''}
           {getPagination()}
           {isNextButton ?
             <li className="pagination__page pagination__page--next" id="next">
-              <a className="link pagination__page-link" href="2">
-                Назад
-              </a>
+              <Link
+                className="link pagination__page-link"
+                to={`${AppRoute.Catalog}${AppRoute.Page}${positionEnd + 1}${location.search}`}
+              >Вперед
+              </Link>
             </li> : ''}
         </ul>
       </div>
