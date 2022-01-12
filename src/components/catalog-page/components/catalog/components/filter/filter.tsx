@@ -1,9 +1,10 @@
-import {useQuery} from '../../../../../../hooks/use-query';
-import {useHistory, useLocation} from 'react-router-dom';
-import {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {getPriceMax, getPriceMin} from '../../../../../../store/guitar-data/selectors';
-import {StringCount, Type} from '../../../../../../const';
+import { useQuery } from '../../../../../../hooks/use-query';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getPriceMax, getPriceMin } from '../../../../../../store/guitar-data/selectors';
+import { StringCount, Type } from '../../../../../../const';
+import { removePageFromLocation } from '../../../../../../util';
 
 function Filter(): JSX.Element {
   const query = useQuery();
@@ -21,37 +22,20 @@ function Filter(): JSX.Element {
   const [type, setType] = useState(query.getAll('type[]'));
   const [stringCount, setStringCount] = useState(query.getAll('stringCount[]'));
 
-  /*eslint-disable-next-line no-console*/
-  console.log(stringCount);
-
-  const handleChangeType = (guitarType: string) => {
-    if (!type.includes(guitarType)) {
-      query.append('type[]', guitarType);
+  const onChangeFilterHandler = (state: string[], setState: React.Dispatch<React.SetStateAction<string[]>>, filterType: string, queryParam: string) => {
+    if (!state.includes(filterType)) {
+      query.append(queryParam, filterType);
+      location.pathname = removePageFromLocation(location.pathname);
       location.search = query.toString();
       history.push(`${location.pathname}?${location.search}`);
     } else {
-      const newTypeList = query.getAll('type[]').filter((element) => element !== guitarType);
-      query.delete('type[]');
-      newTypeList.forEach((typeItem) => query.append('type[]', typeItem));
+      const newFilterList = query.getAll(queryParam).filter((element) => element !== filterType);
+      query.delete(queryParam);
+      newFilterList.forEach((filter) => query.append(queryParam, (filter)));
       location.search = query.toString();
       history.push(`${location.pathname}?${location.search}`);
     }
-    setType(query.getAll('type[]'));
-  };
-
-  const handleChangeStringsCount = (stringsNumber: string) => {
-    if (!stringCount.includes(stringsNumber)) {
-      query.append('stringCount[]', stringsNumber);
-      location.search = query.toString();
-      history.push(`${location.pathname}?${location.search}`);
-    } else {
-      const newStringsCountList = query.getAll('stringCount[]').filter((element) => element !== stringsNumber);
-      query.delete('stringCount[]');
-      newStringsCountList.forEach((item) => query.append('stringCount[]', item));
-      location.search = query.toString();
-      history.push(`${location.pathname}?${location.search}`);
-    }
-    setStringCount(query.getAll('stringCount[]'));
+    setState(query.getAll(queryParam));
   };
 
   return (
@@ -157,7 +141,7 @@ function Filter(): JSX.Element {
             id="acoustic"
             name="acoustic"
             defaultChecked={type.includes(Type.Acoustic)}
-            onChange={() => handleChangeType(Type.Acoustic)}
+            onChange={() => onChangeFilterHandler(type, setType, Type.Acoustic, 'type[]')}
           />
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
@@ -168,7 +152,7 @@ function Filter(): JSX.Element {
             id="electric"
             name="electric"
             defaultChecked={type.includes(Type.Electric)}
-            onChange={() => handleChangeType(Type.Electric)}
+            onChange={() => onChangeFilterHandler(type, setType, Type.Electric, 'type[]')}
           />
           <label htmlFor="electric">Электрогитары</label>
         </div>
@@ -179,7 +163,7 @@ function Filter(): JSX.Element {
             id="ukulele"
             name="ukulele"
             defaultChecked={type.includes(Type.Ukulele)}
-            onChange={() => handleChangeType(Type.Ukulele)}
+            onChange={() => onChangeFilterHandler(type, setType, Type.Ukulele, 'type[]')}
           />
           <label htmlFor="ukulele">Укулеле</label>
         </div>
@@ -193,7 +177,7 @@ function Filter(): JSX.Element {
             id="4-strings"
             name="4-strings"
             defaultChecked={stringCount.includes(String(StringCount.Four))}
-            onChange={() => handleChangeStringsCount(String(StringCount.Four))}
+            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Four), 'stringCount[]')}
             disabled={!type.includes(Type.Ukulele) && !type.includes(Type.Electric) && type.includes(Type.Acoustic)}
           />
           <label htmlFor="4-strings">4</label>
@@ -205,7 +189,7 @@ function Filter(): JSX.Element {
             id="6-strings"
             name="6-strings"
             defaultChecked={stringCount.includes(String(StringCount.Six))}
-            onChange={() => handleChangeStringsCount(String(StringCount.Six))}
+            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Six), 'stringCount[]')}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="6-strings">6</label>
@@ -217,7 +201,7 @@ function Filter(): JSX.Element {
             id="7-strings"
             name="7-strings"
             defaultChecked={stringCount.includes(String(StringCount.Seven))}
-            onChange={() => handleChangeStringsCount(String(StringCount.Seven))}
+            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Seven), 'stringCount[]')}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="7-strings">7</label>
@@ -229,7 +213,7 @@ function Filter(): JSX.Element {
             id="12-strings"
             name="12-strings"
             defaultChecked={stringCount.includes(String(StringCount.Twelve))}
-            onChange={() => handleChangeStringsCount(String(StringCount.Twelve))}
+            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Twelve), 'stringCount[]')}
             disabled={(type.includes(Type.Ukulele) || type.includes(Type.Electric)) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="12-strings">12</label>
