@@ -1,9 +1,10 @@
-import {useQuery} from '../../../../../../hooks/use-query';
-import {useHistory, useLocation} from 'react-router-dom';
-import {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {getPriceMax, getPriceMin} from '../../../../../../store/guitar-data/selectors';
-import {StringCount, Type} from '../../../../../../const';
+import { useQuery } from '../../../../../../hooks/use-query';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getPriceMax, getPriceMin } from '../../../../../../store/guitar-data/selectors';
+import { QueryParam, StringCount, Type } from '../../../../../../const';
+import { resetLocationToFirstPage } from '../../../../../../util';
 
 function Filter(): JSX.Element {
   const query = useQuery();
@@ -15,40 +16,40 @@ function Filter(): JSX.Element {
   const theCheapestPrice = useSelector(getPriceMin);
   const theMostExpensivePrice = useSelector(getPriceMax);
 
-  const [priceMin, setPriceMin] = useState(query.get('price_gte'));
-  const [priceMax, setPriceMax] = useState(query.get('price_lte'));
+  const [priceMin, setPriceMin] = useState(query.get(QueryParam.PriceMinParam));
+  const [priceMax, setPriceMax] = useState(query.get(QueryParam.PriceMaxParam));
 
-  const [type, setType] = useState(query.getAll('type[]'));
-  const [stringsCount, setStringsCount] = useState(query.getAll('stringsCount[]'));
+  const [type, setType] = useState(query.getAll(QueryParam.TypeParam));
 
-  const handleChangeType = (guitarType: string) => {
-    if (!type.includes(guitarType)) {
-      query.append('type[]', guitarType);
-      location.search = query.toString();
-      history.push(`/?${location.search}`);
-    } else {
-      const newTypeList = query.getAll('type[]').filter((element) => element !== guitarType);
-      query.delete('type[]');
-      newTypeList.forEach((typeItem) => query.append('type[]', typeItem));
-      location.search = query.toString();
-      history.push(`/?${location.search}`);
-    }
-    setType(query.getAll('type[]'));
+  const [stringCount, setStringCount] = useState(query.getAll(QueryParam.StringCountParam));
+
+  useEffect(() => {
+    setPriceMin(query.get(QueryParam.PriceMinParam));
+    setPriceMax(query.get(QueryParam.PriceMaxParam ));
+    setType(query.getAll(QueryParam.TypeParam));
+    setStringCount(query.getAll(QueryParam.StringCountParam));
+    /*eslint-disable-next-line*/
+  }, [location.search]);
+
+  const changeURL = () => {
+    location.pathname = resetLocationToFirstPage(location.pathname);
+    location.search = query.toString();
+    history.push(`${location.pathname}?${location.search}`);
   };
 
-  const handleChangeStringsCount = (stringsNumber: string) => {
-    if (!stringsCount.includes(stringsNumber)) {
-      query.append('stringCount[]', stringsNumber);
-      location.search = query.toString();
-      history.push(`/?${location.search}`);
+  const onChangeFilterHandler = (
+    state: string[],
+    filterType: string,
+    queryParam: string) => {
+    if (!state.includes(filterType)) {
+      query.append(queryParam, filterType);
     } else {
-      const newStringsCountList = query.getAll('stringCount[]').filter((element) => element !== stringsNumber);
-      query.delete('stringCount[]');
-      newStringsCountList.forEach((item) => query.append('stringCount[]', item));
-      location.search = query.toString();
-      history.push(`/?${location.search}`);
+      const newFilterList = query.getAll(queryParam)
+        .filter((element) => element !== filterType);
+      query.delete(queryParam);
+      newFilterList.forEach((filter) => query.append(queryParam, (filter)));
     }
-    setStringsCount(query.getAll('stringCount[]'));
+    changeURL();
   };
 
   return (
@@ -64,38 +65,21 @@ function Filter(): JSX.Element {
               placeholder={String(theCheapestPrice)}
               id="priceMin"
               name="от"
-              onChange={(evt) => {
-                setPriceMin(evt.target.value);
-              }}
+              onChange={(evt) => setPriceMin(evt.target.value)}
               onBlur={(evt) => {
                 const newPriceMin = evt.target.value;
-
                 if (Number(newPriceMin) < theCheapestPrice && newPriceMin !== '') {
-                  setPriceMin(String(theCheapestPrice));
-                  query.set('price_gte', String(theCheapestPrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.set(QueryParam.PriceMinParam, String(theCheapestPrice));
                 } else if (Number(newPriceMin) > theMostExpensivePrice) {
-                  setPriceMin(String(theMostExpensivePrice));
-                  query.set('price_gte', String(theMostExpensivePrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.set(QueryParam.PriceMinParam, String(theMostExpensivePrice));
                 } else if (Number(priceMax) && Number(newPriceMin) > Number(priceMax)) {
-                  setPriceMin(String(priceMax));
-                  query.set('price_gte', String(priceMax));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.set(QueryParam.PriceMinParam, String(priceMax));
                 } else if (newPriceMin === '') {
-                  setPriceMin('');
-                  query.delete('price_gte');
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
-                } else{
-                  setPriceMin(newPriceMin);
-                  query.set('price_gte', newPriceMin);
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.delete(QueryParam.PriceMinParam);
+                } else {
+                  query.set(QueryParam.PriceMinParam, newPriceMin);
                 }
+                changeURL();
               }}
               value={priceMin ? priceMin : ''}
             />
@@ -107,38 +91,21 @@ function Filter(): JSX.Element {
               placeholder={String(theMostExpensivePrice)}
               id="priceMax"
               name="до"
-              onChange={(evt) => {
-                setPriceMax(evt.target.value);
-              }}
+              onChange={(evt) => setPriceMax(evt.target.value)}
               onBlur={(evt) => {
                 const newPriceMax = evt.target.value;
-
                 if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
-                  setPriceMax(String(theMostExpensivePrice));
-                  query.set('price_lte', String(theMostExpensivePrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.set(QueryParam.PriceMaxParam, String(theMostExpensivePrice));
                 } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
-                  setPriceMax(String(theCheapestPrice));
-                  query.set('price_lte', String(theCheapestPrice));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.set(QueryParam.PriceMaxParam, String(theCheapestPrice));
                 } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
-                  setPriceMax(String(priceMin));
-                  query.set('price_lte', String(priceMin));
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.set(QueryParam.PriceMaxParam, String(priceMin));
                 } else if (newPriceMax === '') {
-                  setPriceMax('');
-                  query.delete('price_lte');
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.delete(QueryParam.PriceMaxParam);
                 } else {
-                  setPriceMax(newPriceMax);
-                  query.set('price_lte', newPriceMax);
-                  location.search = query.toString();
-                  history.push(`/?${location.search}`);
+                  query.set(QueryParam.PriceMaxParam, newPriceMax);
                 }
+                changeURL();
               }}
               value={priceMax ? priceMax : ''}
             />
@@ -153,8 +120,8 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="acoustic"
             name="acoustic"
-            defaultChecked={type.includes(Type.Acoustic)}
-            onChange={() => handleChangeType(Type.Acoustic)}
+            checked={type.includes(Type.Acoustic)}
+            onChange={() => onChangeFilterHandler(type, Type.Acoustic, QueryParam.TypeParam)}
           />
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
@@ -164,8 +131,8 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="electric"
             name="electric"
-            defaultChecked={type.includes(Type.Electric)}
-            onChange={() => handleChangeType(Type.Electric)}
+            checked={type.includes(Type.Electric)}
+            onChange={() => onChangeFilterHandler(type, Type.Electric, QueryParam.TypeParam)}
           />
           <label htmlFor="electric">Электрогитары</label>
         </div>
@@ -175,8 +142,8 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="ukulele"
             name="ukulele"
-            defaultChecked={type.includes(Type.Ukulele)}
-            onChange={() => handleChangeType(Type.Ukulele)}
+            checked={type.includes(Type.Ukulele)}
+            onChange={() => onChangeFilterHandler(type, Type.Ukulele, QueryParam.TypeParam)}
           />
           <label htmlFor="ukulele">Укулеле</label>
         </div>
@@ -189,7 +156,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="4-strings"
             name="4-strings"
-            onChange={() => handleChangeStringsCount(String(StringCount.Four))}
+            checked={stringCount.includes(String(StringCount.Four))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Four), QueryParam.StringCountParam)}
             disabled={!type.includes(Type.Ukulele) && !type.includes(Type.Electric) && type.includes(Type.Acoustic)}
           />
           <label htmlFor="4-strings">4</label>
@@ -200,7 +169,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="6-strings"
             name="6-strings"
-            onChange={() => handleChangeStringsCount(String(StringCount.Six))}
+            checked={stringCount.includes(String(StringCount.Six))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Six), QueryParam.StringCountParam)}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="6-strings">6</label>
@@ -211,7 +182,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="7-strings"
             name="7-strings"
-            onChange={() => handleChangeStringsCount(String(StringCount.Seven))}
+            checked={stringCount.includes(String(StringCount.Seven))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Seven), QueryParam.StringCountParam)}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="7-strings">7</label>
@@ -222,7 +195,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="12-strings"
             name="12-strings"
-            onChange={() => handleChangeStringsCount(String(StringCount.Twelve))}
+            checked={stringCount.includes(String(StringCount.Twelve))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Twelve), QueryParam.StringCountParam)}
             disabled={(type.includes(Type.Ukulele) || type.includes(Type.Electric)) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="12-strings">12</label>

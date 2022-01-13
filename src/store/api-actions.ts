@@ -1,11 +1,19 @@
-import {ThunkActionResult} from '../types/action';
-import {loadGuitars, loadPriceMax, loadPriceMin, loadSearchSuggestions, updateTotal} from './action';
-import {APIRoute, PRICE_MAX, PRICE_MIN} from '../const';
-import {Guitar} from '../types/guitar';
-import {FetchGuitarsParams} from '../types/fetch-guitars-params';
+import { ThunkActionResult } from '../types/action';
+import {
+  loadGuitars,
+  loadPriceMax,
+  loadPriceMin,
+  loadSearchSuggestions,
+  updateTotal } from './action';
+import {
+  APIRoute,
+  PRICE_MAX,
+  PRICE_MIN,
+  QueryParam } from '../const';
+import { Guitar } from '../types/guitar';
+import { FetchGuitarsParams } from '../types/fetch-guitars-params';
 
 export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResult => {
-
   const getQuery = (queryParams: FetchGuitarsParams): string => {
     const {
       start,
@@ -19,36 +27,38 @@ export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResul
     } = queryParams;
 
     const urlQueryParams = new URLSearchParams('');
+
     if (priceMin && priceMin !== String(PRICE_MIN)) {
-      urlQueryParams.append('price_gte', priceMin);
+      urlQueryParams.append(QueryParam.PriceMinParam, priceMin);
     }
     if (priceMax && priceMax !== String(PRICE_MAX)) {
-      urlQueryParams.append('price_lte', priceMax);
+      urlQueryParams.append(QueryParam.PriceMaxParam, priceMax);
     }
     if (types && types.length !== 0) {
-      types.forEach((el: string) => urlQueryParams.append('type[]', el));
+      types.forEach((el: string) => urlQueryParams.append(QueryParam.TypeParam, el));
     }
     if (stringCount && stringCount.length !== 0) {
-      stringCount.forEach((el: string) => urlQueryParams.append('stringCount[]', el));
+      stringCount.forEach((el: string) => urlQueryParams.append(QueryParam.StringCountParam, el));
     }
     if (sort) {
-      urlQueryParams.append('_sort', sort);
+      urlQueryParams.append(QueryParam.SortParam, sort);
     }
     if (order) {
-      urlQueryParams.append('_order', order);
+      urlQueryParams.append(QueryParam.OrderParam, order);
     }
     if (start) {
-      urlQueryParams.append('_start', start);
+      urlQueryParams.append(QueryParam.StartParam, start);
     }
     if (limit) {
-      urlQueryParams.append('_limit', limit);
+      urlQueryParams.append(QueryParam.LimitParam, limit);
     }
 
     return urlQueryParams.toString();
   };
 
   return async (dispatch, _getState, api): Promise<void> => {
-    const {data, headers} = await api.get<Guitar[]>(`${APIRoute.Guitars}${getQuery(params).length === 0 ? '' : `?${getQuery(params)}`}`);
+    const {data, headers} = await api
+      .get<Guitar[]>(`${APIRoute.Guitars}${getQuery(params).length === 0 ? '' : `?${getQuery(params)}`}`);
     dispatch(loadGuitars(data));
     dispatch(updateTotal(Number(headers['x-total-count'])));
   };
@@ -68,6 +78,6 @@ export const fetchGuitarByDesc = (): ThunkActionResult =>
 
 export const searchGuitarsAction = (name: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<Guitar[]>(`${APIRoute.Guitars}?name_like=${name}`);
+    const {data} = await api.get<Guitar[]>(`${APIRoute.Guitars}?${QueryParam.SearchParam}=${name}`);
     dispatch(loadSearchSuggestions(data));
   };

@@ -2,27 +2,76 @@ import Header from '../common/header/header';
 import Footer from '../common/footer/footer';
 import BreadCrumbs from '../common/bread-crumbs/bread-crumbs';
 import Catalog from './components/catalog/catalog';
-import {getGuitars, getStart} from '../../store/guitar-data/selectors';
-import {useSelector} from 'react-redux';
-import {ITEMS_PER_PAGE, Order, Page, PRICE_MAX, PRICE_MIN, Sort as SortType} from '../../const';
-import {fetchGuitarByAsc, fetchGuitarByDesc, fetchGuitarsAction} from '../../store/api-actions';
-import {store} from '../../index';
-import {useEffect, useRef} from 'react';
-import {useQuery} from '../../hooks/use-query';
+import { getGuitars } from '../../store/guitar-data/selectors';
+import { useSelector } from 'react-redux';
+import {
+  AppRoute,
+  ITEMS_PER_PAGE,
+  Order,
+  PageTitle,
+  PRICE_MAX,
+  PRICE_MIN,
+  QueryParam,
+  Sort as SortType
+} from '../../const';
+import {
+  fetchGuitarByAsc,
+  fetchGuitarByDesc,
+  fetchGuitarsAction } from '../../store/api-actions';
+import { store } from '../../index';
+import { useEffect, useRef } from 'react';
+import { useQuery } from '../../hooks/use-query';
+import { useHistory, useLocation } from 'react-router-dom';
+import { getCurrentPage } from '../../util';
 
-document.title = Page.Catalog;
+document.title = PageTitle.Catalog;
 
 function CatalogPage(): JSX.Element {
 
   const query = useQuery();
+  const location = useLocation();
+  const history = useHistory();
 
-  const priceMin = query.get('price_gte') ? query.get('price_gte') : String(PRICE_MIN);
-  const priceMax = query.get('price_lte') ? query.get('price_lte') : String(PRICE_MAX);
-  const start = String(useSelector(getStart));
-  const sort = query.get('_sort') && query.get('_sort') as SortType ? query.get('_sort') : SortType.Price;
-  const order = query.get('_order') && query.get('_order') as Order ? query.get('_order') : Order.Asc;
-  const types = query.getAll('type[]').length !== 0 ? query.getAll('type[]') : [];
-  const stringCount = query.getAll('stringCount[]').length !== 0 ? query.getAll('stringCount[]') : [];
+  if (!location.pathname.includes(AppRoute.Catalog)) {
+    location.pathname = `${AppRoute.Catalog}${AppRoute.Page}1`;
+    location.search = query.toString();
+    history.push(`${location.pathname}?${location.search}`);
+  } else {
+    if (!location.pathname.includes(AppRoute.Page)) {
+      location.pathname = `${AppRoute.Catalog}${AppRoute.Page}1`;
+      location.search = query.toString();
+      history.push(`${location.pathname}?${location.search}`);
+    }
+  }
+
+  const currentPage = getCurrentPage(location.pathname);
+
+  const priceMin = query.get(QueryParam.PriceMinParam) ?
+    query.get(QueryParam.PriceMinParam) :
+    String(PRICE_MIN);
+
+  const priceMax = query.get(QueryParam.PriceMaxParam) ?
+    query.get(QueryParam.PriceMaxParam) :
+    String(PRICE_MAX);
+
+  const start = String((currentPage-1) * ITEMS_PER_PAGE);
+
+  const sort = query.get(QueryParam.SortParam) && query.get(QueryParam.SortParam) as SortType ?
+    query.get(QueryParam.SortParam) :
+    SortType.Price;
+
+  const order = query.get(QueryParam.OrderParam) && query.get(QueryParam.OrderParam) as Order ?
+    query.get(QueryParam.OrderParam) :
+    Order.Asc;
+
+  const types = query.getAll(QueryParam.TypeParam).length !== 0 ?
+    query.getAll(QueryParam.TypeParam) :
+    [];
+
+  const stringCount = query.getAll(QueryParam.StringCountParam).length !== 0 ?
+    query.getAll(QueryParam.StringCountParam) :
+    [];
+
   const limit = String(ITEMS_PER_PAGE);
 
   const arraysNotEqual = (prev: string[], next: string[]) => {
@@ -51,7 +100,15 @@ function CatalogPage(): JSX.Element {
   useEffect(() => {
     store.dispatch(fetchGuitarByAsc());
     store.dispatch(fetchGuitarByDesc());
-    store.dispatch(fetchGuitarsAction({priceMin, priceMax, types: typesRef.current, sort, order, start, limit, stringCount: stringsCountRef.current}));
+    store.dispatch(fetchGuitarsAction(
+      {priceMin,
+        priceMax,
+        types: typesRef.current,
+        stringCount: stringsCountRef.current,
+        sort,
+        order,
+        start,
+        limit}));
     /*eslint-disable-next-line*/
   }, [priceMin, priceMax, typesRef.current, stringsCountRef.current, sort, order, start, limit]);
 

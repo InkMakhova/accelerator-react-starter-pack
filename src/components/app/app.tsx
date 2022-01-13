@@ -11,6 +11,12 @@ function App(): JSX.Element {
         <Route exact path={AppRoute.Root}>
           <CatalogPage />;
         </Route>
+        <Route exact path={AppRoute.Catalog}>
+          <CatalogPage />;
+        </Route>
+        <Route exact path={`${AppRoute.Catalog}${AppRoute.Page}:page`}>
+          <CatalogPage />;
+        </Route>
         <Route >
           <NotFoundPage />;
         </Route>
