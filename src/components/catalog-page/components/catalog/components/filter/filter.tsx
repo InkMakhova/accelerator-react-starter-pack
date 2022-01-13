@@ -1,10 +1,10 @@
 import { useQuery } from '../../../../../../hooks/use-query';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getPriceMax, getPriceMin } from '../../../../../../store/guitar-data/selectors';
-import { StringCount, Type } from '../../../../../../const';
-import { removePageFromLocation } from '../../../../../../util';
+import { QueryParam, StringCount, Type } from '../../../../../../const';
+import { resetLocationToFirstPage } from '../../../../../../util';
 
 function Filter(): JSX.Element {
   const query = useQuery();
@@ -16,29 +16,40 @@ function Filter(): JSX.Element {
   const theCheapestPrice = useSelector(getPriceMin);
   const theMostExpensivePrice = useSelector(getPriceMax);
 
-  const [priceMin, setPriceMin] = useState(query.get('price_gte'));
-  const [priceMax, setPriceMax] = useState(query.get('price_lte'));
+  const [priceMin, setPriceMin] = useState(query.get(QueryParam.PriceMinParam));
+  const [priceMax, setPriceMax] = useState(query.get(QueryParam.PriceMaxParam));
 
-  const [type, setType] = useState(query.getAll('type[]'));
-  const [stringCount, setStringCount] = useState(query.getAll('stringCount[]'));
+  const [type, setType] = useState(query.getAll(QueryParam.TypeParam));
+
+  const [stringCount, setStringCount] = useState(query.getAll(QueryParam.StringCountParam));
+
+  useEffect(() => {
+    setPriceMin(query.get(QueryParam.PriceMinParam));
+    setPriceMax(query.get(QueryParam.PriceMaxParam ));
+    setType(query.getAll(QueryParam.TypeParam));
+    setStringCount(query.getAll(QueryParam.StringCountParam));
+    /*eslint-disable-next-line*/
+  }, [location.search]);
 
   const changeURL = () => {
-    location.pathname = removePageFromLocation(location.pathname);
+    location.pathname = resetLocationToFirstPage(location.pathname);
     location.search = query.toString();
     history.push(`${location.pathname}?${location.search}`);
   };
 
-  const onChangeFilterHandler = (state: string[], setState: React.Dispatch<React.SetStateAction<string[]>>, filterType: string, queryParam: string) => {
+  const onChangeFilterHandler = (
+    state: string[],
+    filterType: string,
+    queryParam: string) => {
     if (!state.includes(filterType)) {
       query.append(queryParam, filterType);
-      changeURL();
     } else {
-      const newFilterList = query.getAll(queryParam).filter((element) => element !== filterType);
+      const newFilterList = query.getAll(queryParam)
+        .filter((element) => element !== filterType);
       query.delete(queryParam);
       newFilterList.forEach((filter) => query.append(queryParam, (filter)));
-      changeURL();
     }
-    setState(query.getAll(queryParam));
+    changeURL();
   };
 
   return (
@@ -54,33 +65,21 @@ function Filter(): JSX.Element {
               placeholder={String(theCheapestPrice)}
               id="priceMin"
               name="от"
-              onChange={(evt) => {
-                setPriceMin(evt.target.value);
-              }}
+              onChange={(evt) => setPriceMin(evt.target.value)}
               onBlur={(evt) => {
                 const newPriceMin = evt.target.value;
-
                 if (Number(newPriceMin) < theCheapestPrice && newPriceMin !== '') {
-                  setPriceMin(String(theCheapestPrice));
-                  query.set('price_gte', String(theCheapestPrice));
-                  changeURL();
+                  query.set(QueryParam.PriceMinParam, String(theCheapestPrice));
                 } else if (Number(newPriceMin) > theMostExpensivePrice) {
-                  setPriceMin(String(theMostExpensivePrice));
-                  query.set('price_gte', String(theMostExpensivePrice));
-                  changeURL();
+                  query.set(QueryParam.PriceMinParam, String(theMostExpensivePrice));
                 } else if (Number(priceMax) && Number(newPriceMin) > Number(priceMax)) {
-                  setPriceMin(String(priceMax));
-                  query.set('price_gte', String(priceMax));
-                  changeURL();
+                  query.set(QueryParam.PriceMinParam, String(priceMax));
                 } else if (newPriceMin === '') {
-                  setPriceMin('');
-                  query.delete('price_gte');
-                  changeURL();
-                } else{
-                  setPriceMin(newPriceMin);
-                  query.set('price_gte', newPriceMin);
-                  changeURL();
+                  query.delete(QueryParam.PriceMinParam);
+                } else {
+                  query.set(QueryParam.PriceMinParam, newPriceMin);
                 }
+                changeURL();
               }}
               value={priceMin ? priceMin : ''}
             />
@@ -92,33 +91,21 @@ function Filter(): JSX.Element {
               placeholder={String(theMostExpensivePrice)}
               id="priceMax"
               name="до"
-              onChange={(evt) => {
-                setPriceMax(evt.target.value);
-              }}
+              onChange={(evt) => setPriceMax(evt.target.value)}
               onBlur={(evt) => {
                 const newPriceMax = evt.target.value;
-
                 if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
-                  setPriceMax(String(theMostExpensivePrice));
-                  query.set('price_lte', String(theMostExpensivePrice));
-                  changeURL();
+                  query.set(QueryParam.PriceMaxParam, String(theMostExpensivePrice));
                 } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
-                  setPriceMax(String(theCheapestPrice));
-                  query.set('price_lte', String(theCheapestPrice));
-                  changeURL();
+                  query.set(QueryParam.PriceMaxParam, String(theCheapestPrice));
                 } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
-                  setPriceMax(String(priceMin));
-                  query.set('price_lte', String(priceMin));
-                  changeURL();
+                  query.set(QueryParam.PriceMaxParam, String(priceMin));
                 } else if (newPriceMax === '') {
-                  setPriceMax('');
-                  query.delete('price_lte');
-                  changeURL();
+                  query.delete(QueryParam.PriceMaxParam);
                 } else {
-                  setPriceMax(newPriceMax);
-                  query.set('price_lte', newPriceMax);
-                  changeURL();
+                  query.set(QueryParam.PriceMaxParam, newPriceMax);
                 }
+                changeURL();
               }}
               value={priceMax ? priceMax : ''}
             />
@@ -133,8 +120,8 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="acoustic"
             name="acoustic"
-            defaultChecked={type.includes(Type.Acoustic)}
-            onChange={() => onChangeFilterHandler(type, setType, Type.Acoustic, 'type[]')}
+            checked={type.includes(Type.Acoustic)}
+            onChange={() => onChangeFilterHandler(type, Type.Acoustic, QueryParam.TypeParam)}
           />
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
@@ -144,8 +131,8 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="electric"
             name="electric"
-            defaultChecked={type.includes(Type.Electric)}
-            onChange={() => onChangeFilterHandler(type, setType, Type.Electric, 'type[]')}
+            checked={type.includes(Type.Electric)}
+            onChange={() => onChangeFilterHandler(type, Type.Electric, QueryParam.TypeParam)}
           />
           <label htmlFor="electric">Электрогитары</label>
         </div>
@@ -155,8 +142,8 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="ukulele"
             name="ukulele"
-            defaultChecked={type.includes(Type.Ukulele)}
-            onChange={() => onChangeFilterHandler(type, setType, Type.Ukulele, 'type[]')}
+            checked={type.includes(Type.Ukulele)}
+            onChange={() => onChangeFilterHandler(type, Type.Ukulele, QueryParam.TypeParam)}
           />
           <label htmlFor="ukulele">Укулеле</label>
         </div>
@@ -169,8 +156,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="4-strings"
             name="4-strings"
-            defaultChecked={stringCount.includes(String(StringCount.Four))}
-            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Four), 'stringCount[]')}
+            checked={stringCount.includes(String(StringCount.Four))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Four), QueryParam.StringCountParam)}
             disabled={!type.includes(Type.Ukulele) && !type.includes(Type.Electric) && type.includes(Type.Acoustic)}
           />
           <label htmlFor="4-strings">4</label>
@@ -181,8 +169,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="6-strings"
             name="6-strings"
-            defaultChecked={stringCount.includes(String(StringCount.Six))}
-            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Six), 'stringCount[]')}
+            checked={stringCount.includes(String(StringCount.Six))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Six), QueryParam.StringCountParam)}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="6-strings">6</label>
@@ -193,8 +182,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="7-strings"
             name="7-strings"
-            defaultChecked={stringCount.includes(String(StringCount.Seven))}
-            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Seven), 'stringCount[]')}
+            checked={stringCount.includes(String(StringCount.Seven))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Seven), QueryParam.StringCountParam)}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="7-strings">7</label>
@@ -205,8 +195,9 @@ function Filter(): JSX.Element {
             type="checkbox"
             id="12-strings"
             name="12-strings"
-            defaultChecked={stringCount.includes(String(StringCount.Twelve))}
-            onChange={() => onChangeFilterHandler(stringCount, setStringCount, String(StringCount.Twelve), 'stringCount[]')}
+            checked={stringCount.includes(String(StringCount.Twelve))}
+            onChange={() =>
+              onChangeFilterHandler(stringCount, String(StringCount.Twelve), QueryParam.StringCountParam)}
             disabled={(type.includes(Type.Ukulele) || type.includes(Type.Electric)) && !type.includes(Type.Acoustic)}
           />
           <label htmlFor="12-strings">12</label>

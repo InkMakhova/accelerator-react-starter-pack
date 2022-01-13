@@ -18,6 +18,18 @@ export enum APIRoute {
   Guitars = '/Guitars',
 }
 
+export enum QueryParam {
+  SortParam = '_sort',
+  OrderParam = '_order',
+  PriceMinParam = 'price_gte',
+  PriceMaxParam = 'price_lte',
+  TypeParam = 'type[]',
+  StringCountParam = 'stringCount[]',
+  StartParam = '_start',
+  LimitParam = '_limit',
+  SearchParam = 'name_like',
+}
+
 export const ITEMS_PER_PAGE = 9;
 
 export const PAGINATION_STEP = 3;
