@@ -1,24 +1,25 @@
 import Header from '../common/header/header';
 import { Link } from 'react-router-dom';
 import Footer from '../common/footer/footer';
-import { AppRoute, NavigationSection } from '../../const';
+import { AppRoute } from '../../const';
 
-function NotFoundPage(): JSX.Element {
+type UnderConstructionPageProps = {
+  currentNavigationSection: string;
+}
+
+function UnderConstructionPage({currentNavigationSection}: UnderConstructionPageProps): JSX.Element {
 
   return (
     <div className="wrapper">
-      <Header currentNavigationSection={NavigationSection.PageNotFound}/>
+      <Header currentNavigationSection={currentNavigationSection}/>
 
       <main className="page-content">
         <div className="container" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <h1
             className="page-content__title title title--bigger"
             style={{fontSize: 'xxx-large', marginBottom: '1em'}}
-          >404
+          >Страница находится в разработке
           </h1>
-          <p style={{fontWeight: 'bold', marginBottom: '1em'}}>
-            Страница не найдена
-          </p>
           <Link
             to={AppRoute.Root}
             style={{fontWeight: 'bold', color: '#c90606', textDecoration: 'underline'}}
@@ -33,4 +34,4 @@ function NotFoundPage(): JSX.Element {
   );
 }
 
-export default NotFoundPage;
+export default UnderConstructionPage;

@@ -3,6 +3,13 @@ export enum PageTitle {
   Cart = 'Корзина — Guitar-shop',
 }
 
+export enum NavigationSection {
+  Catalog = 'catalog',
+  WhereToBuy = 'whereToBuy',
+  AboutUs = 'aboutUs',
+  PageNotFound = 'pageNotFound',
+}
+
 export enum AppRoute {
   Root = '/',
   Catalog = '/catalog',
