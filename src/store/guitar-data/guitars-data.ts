@@ -1,8 +1,11 @@
-import {GuitarData} from '../../types/state';
-import {createReducer} from '@reduxjs/toolkit';
+import { GuitarData } from '../../types/state';
+import { createReducer } from '@reduxjs/toolkit';
 import {
-  loadGuitars, loadPriceMax, loadPriceMin, loadSearchSuggestions, updateTotal
-} from '../action';
+  loadGuitars,
+  loadPriceMax,
+  loadPriceMin,
+  loadSearchSuggestions,
+  updateTotal } from '../action';
 
 const initialState: GuitarData = {
   guitars: [],
@@ -10,7 +13,6 @@ const initialState: GuitarData = {
   priceMax: 0,
   searchSuggestions: [],
   total: 0,
-  start: 0,
   page: 1,
 };
 
@@ -33,4 +35,4 @@ const guitarData = createReducer(initialState, (builder) => {
     });
 });
 
-export {guitarData};
+export { guitarData };

@@ -1,5 +1,5 @@
-import {RootState} from '../store/root-reducer';
-import {Guitar} from './guitar';
+import { RootState } from '../store/root-reducer';
+import { Guitar } from './guitar';
 
 export type GuitarData = {
   guitars: Guitar[];
@@ -7,7 +7,6 @@ export type GuitarData = {
   priceMax: number,
   searchSuggestions: Guitar[];
   total: number;
-  start: number;
   page: number;
 }
 
