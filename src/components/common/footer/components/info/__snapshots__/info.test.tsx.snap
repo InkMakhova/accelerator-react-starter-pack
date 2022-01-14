@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Info correctly 1`] = `
+<div>
+  <section
+    class="footer__nav-section footer__nav-section--links"
+  >
+    <h2
+      class="footer__nav-title"
+    >
+      Информация
+    </h2>
+    <ul
+      class="footer__nav-list"
+    >
+      <li
+        class="footer__nav-list-item"
+      >
+        <a
+          class="link"
+          href="#top"
+        >
+          Где купить?
+        </a>
+      </li>
+      <li
+        class="footer__nav-list-item"
+      >
+        <a
+          class="link"
+          href="#top"
+        >
+          Блог
+        </a>
+      </li>
+      <li
+        class="footer__nav-list-item"
+      >
+        <a
+          class="link"
+          href="#top"
+        >
+          Вопрос - ответ
+        </a>
+      </li>
+      <li
+        class="footer__nav-list-item"
+      >
+        <a
+          class="link"
+          href="#top"
+        >
+          Возврат
+        </a>
+      </li>
+      <li
+        class="footer__nav-list-item"
+      >
+        <a
+          class="link"
+          href="#top"
+        >
+          Сервис-центры
+        </a>
+      </li>
+    </ul>
+  </section>
+</div>
+`;
