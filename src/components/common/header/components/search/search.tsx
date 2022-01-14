@@ -1,16 +1,16 @@
-import {useEffect, useState} from 'react';
-import {searchGuitarsAction} from '../../../../../store/api-actions';
-import {store} from '../../../../../index';
-import {Guitar} from '../../../../../types/guitar';
-import {useSelector} from 'react-redux';
-import {getSearchSuggestions} from '../../../../../store/guitar-data/selectors';
-import {useHistory} from 'react-router-dom';
-import {AppRoute} from '../../../../../const';
+import { useEffect, useState } from 'react';
+import { searchGuitarsAction } from '../../../../../store/api-actions';
+import { store } from '../../../../../index';
+import { Guitar } from '../../../../../types/guitar';
+import { useSelector } from 'react-redux';
+import { getSearchSuggestions } from '../../../../../store/guitar-data/selectors';
+import { useHistory } from 'react-router-dom';
+import { AppRoute } from '../../../../../const';
 
 function Search(): JSX.Element {
-  const [searchValue, setSearchValue] = useState('');
-
   const history = useHistory();
+
+  const [searchValue, setSearchValue] = useState('');
 
   const showSearchSuggestions = (searchSuggestions: Guitar[]): JSX.Element => {
     if (searchSuggestions.length > 0) {

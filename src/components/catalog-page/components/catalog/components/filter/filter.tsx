@@ -8,9 +8,7 @@ import { resetLocationToFirstPage } from '../../../../../../util';
 
 function Filter(): JSX.Element {
   const query = useQuery();
-
   const location = useLocation();
-
   const history = useHistory();
 
   const theCheapestPrice = useSelector(getPriceMin);

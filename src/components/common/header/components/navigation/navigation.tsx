@@ -1,4 +1,4 @@
-import {AppRoute, NavigationSection} from '../../../../../const';
+import { AppRoute, NavigationSection } from '../../../../../const';
 import { Link } from 'react-router-dom';
 
 type NavigationProps = {

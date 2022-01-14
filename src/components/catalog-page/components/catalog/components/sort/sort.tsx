@@ -6,9 +6,7 @@ import { resetLocationToFirstPage } from '../../../../../../util';
 
 function Sort(): JSX.Element {
   const query = useQuery();
-
   const location = useLocation();
-
   const history = useHistory();
 
   const [sort, setSort] = useState(

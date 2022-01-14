@@ -1,6 +1,6 @@
-import {Guitar} from '../../../../../../../../types/guitar';
-import {Link} from 'react-router-dom';
-import {AppRoute} from '../../../../../../../../const';
+import { Guitar } from '../../../../../../../../types/guitar';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../../../../../../../const';
 
 type ProductCardProps = {
   guitar: Guitar;

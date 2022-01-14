@@ -1,5 +1,5 @@
-import {Link} from 'react-router-dom';
-import {AppRoute} from '../../../const';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../../const';
 
 function BreadCrumbs(): JSX.Element {
   return (
@@ -10,7 +10,7 @@ function BreadCrumbs(): JSX.Element {
         </Link>
       </li>
       <li className="breadcrumbs__item">
-        <Link className="link" to={AppRoute.Root}>Каталог</Link>
+        <Link className="link" to={AppRoute.Catalog}>Каталог</Link>
       </li>
     </ul>
   );
