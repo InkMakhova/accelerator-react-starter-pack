@@ -1,12 +1,13 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Cart from './cart';
+import Navigation from './navigation';
+import {NavigationSection} from '../../../../../const';
 
-it('should render Cart correctly', () => {
+it('should render Navigation correctly', () => {
   const {container} = render(
     <Router>
-      <Cart />
+      <Navigation currentNavigationSection={NavigationSection.Catalog}/>
     </Router>);
   expect(container).toMatchSnapshot();
 });

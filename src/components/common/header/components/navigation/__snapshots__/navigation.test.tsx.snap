@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Navigation correctly 1`] = `
+<div>
+  <nav
+    class="main-nav"
+  >
+    <ul
+      class="main-nav__list"
+    >
+      <li>
+        <a
+          class="link main-nav__link
+              link--current"
+          href="/"
+        >
+          Каталог
+        </a>
+      </li>
+      <li>
+        <a
+          class="link main-nav__link
+              "
+          href="/where-to-buy"
+        >
+          Где купить?
+        </a>
+      </li>
+      <li>
+        <a
+          class="link main-nav__link
+              "
+          href="/about-us"
+        >
+          О компании
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+`;

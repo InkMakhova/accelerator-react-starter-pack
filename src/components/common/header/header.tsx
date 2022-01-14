@@ -20,4 +20,4 @@ function Header({currentNavigationSection}: HeaderProps): JSX.Element {
   );
 }
 
-export  default Header;
+export default Header;
