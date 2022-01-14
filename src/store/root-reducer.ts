@@ -1,5 +1,5 @@
-import {combineReducers} from 'redux';
-import {guitarData} from './guitar-data/guitars-data';
+import { combineReducers } from 'redux';
+import { guitarData } from './guitar-data/guitars-data';
 
 export enum NameSpace {
   data = 'DATA',

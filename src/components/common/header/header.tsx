@@ -3,12 +3,16 @@ import Navigation from './components/navigation/navigation';
 import Search from './components/search/search';
 import Cart from './components/cart/cart';
 
-function Header(): JSX.Element {
+type HeaderProps = {
+  currentNavigationSection: string;
+}
+
+function Header({currentNavigationSection}: HeaderProps): JSX.Element {
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
         <Logo />
-        <Navigation />
+        <Navigation currentNavigationSection={currentNavigationSection}/>
         <Search />
         <Cart />
       </div>

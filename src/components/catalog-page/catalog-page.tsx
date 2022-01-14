@@ -6,7 +6,7 @@ import { getGuitars } from '../../store/guitar-data/selectors';
 import { useSelector } from 'react-redux';
 import {
   AppRoute,
-  ITEMS_PER_PAGE,
+  ITEMS_PER_PAGE, NavigationSection,
   Order,
   PageTitle,
   PRICE_MAX,
@@ -27,7 +27,6 @@ import { getCurrentPage } from '../../util';
 document.title = PageTitle.Catalog;
 
 function CatalogPage(): JSX.Element {
-
   const query = useQuery();
   const location = useLocation();
   const history = useHistory();
@@ -116,7 +115,7 @@ function CatalogPage(): JSX.Element {
 
   return (
     <div className="wrapper">
-      <Header />
+      <Header currentNavigationSection={NavigationSection.Catalog}/>
 
       <main className="page-content">
         <div className="container">
