@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render BreadCrumbs correctly 1`] = `
+<div>
+  <ul
+    class="breadcrumbs page-content__breadcrumbs"
+  >
+    <li
+      class="breadcrumbs__item"
+    >
+      <a
+        class="link"
+        href="/"
+      >
+        Главная
+      </a>
+    </li>
+    <li
+      class="breadcrumbs__item"
+    >
+      <a
+        class="link"
+        href="/catalog"
+      >
+        Каталог
+      </a>
+    </li>
+  </ul>
+</div>
+`;
