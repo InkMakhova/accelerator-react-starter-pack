@@ -11,11 +11,12 @@ export const resetLocationToFirstPage = (locationPath: string): string => {
 
 export const getCurrentPage = (locationPath: string): number => {
   if (locationPath.includes(AppRoute.Page)) {
-    const page = locationPath
-      .split('/')[locationPath.split('/').length-1];
+    const locationParts = locationPath.split('/');
+    const pagePart = locationParts[locationParts.length - 1];
+    const pageParts = pagePart.split('_');
+    const page = Number(pageParts[pageParts.length-1]);
 
-    return Number(page[page.length-1]
-      .split('_')[page[page.length-1].split('_').length-1]);
+    return (isNaN(page) || page < 1) ? 1 : page;
   } else {
     return 1;
   }
