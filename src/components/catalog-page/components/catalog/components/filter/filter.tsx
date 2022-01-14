@@ -66,18 +66,22 @@ function Filter(): JSX.Element {
               onChange={(evt) => setPriceMin(evt.target.value)}
               onBlur={(evt) => {
                 const newPriceMin = evt.target.value;
-                if (Number(newPriceMin) < theCheapestPrice && newPriceMin !== '') {
-                  query.set(QueryParam.PriceMinParam, String(theCheapestPrice));
-                } else if (Number(newPriceMin) > theMostExpensivePrice) {
-                  query.set(QueryParam.PriceMinParam, String(theMostExpensivePrice));
-                } else if (Number(priceMax) && Number(newPriceMin) > Number(priceMax)) {
-                  query.set(QueryParam.PriceMinParam, String(priceMax));
-                } else if (newPriceMin === '') {
-                  query.delete(QueryParam.PriceMinParam);
-                } else {
-                  query.set(QueryParam.PriceMinParam, newPriceMin);
+                const priceMinPrev = Number(query.get(QueryParam.PriceMinParam));
+
+                if (Number(newPriceMin) !== priceMinPrev) {
+                  if (Number(newPriceMin) < theCheapestPrice && newPriceMin !== '') {
+                    query.set(QueryParam.PriceMinParam, String(theCheapestPrice));
+                  } else if (Number(newPriceMin) > theMostExpensivePrice) {
+                    query.set(QueryParam.PriceMinParam, String(theMostExpensivePrice));
+                  } else if (Number(priceMax) && Number(newPriceMin) > Number(priceMax)) {
+                    query.set(QueryParam.PriceMinParam, String(priceMax));
+                  } else if (newPriceMin === '') {
+                    query.delete(QueryParam.PriceMinParam);
+                  } else {
+                    query.set(QueryParam.PriceMinParam, newPriceMin);
+                  }
+                  changeURL();
                 }
-                changeURL();
               }}
               value={priceMin ? priceMin : ''}
             />
@@ -92,18 +96,22 @@ function Filter(): JSX.Element {
               onChange={(evt) => setPriceMax(evt.target.value)}
               onBlur={(evt) => {
                 const newPriceMax = evt.target.value;
-                if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
-                  query.set(QueryParam.PriceMaxParam, String(theMostExpensivePrice));
-                } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
-                  query.set(QueryParam.PriceMaxParam, String(theCheapestPrice));
-                } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
-                  query.set(QueryParam.PriceMaxParam, String(priceMin));
-                } else if (newPriceMax === '') {
-                  query.delete(QueryParam.PriceMaxParam);
-                } else {
-                  query.set(QueryParam.PriceMaxParam, newPriceMax);
+                const priceMaxPrev = Number(query.get(QueryParam.PriceMaxParam));
+
+                if (Number(newPriceMax) !== priceMaxPrev) {
+                  if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
+                    query.set(QueryParam.PriceMaxParam, String(theMostExpensivePrice));
+                  } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
+                    query.set(QueryParam.PriceMaxParam, String(theCheapestPrice));
+                  } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
+                    query.set(QueryParam.PriceMaxParam, String(priceMin));
+                  } else if (newPriceMax === '') {
+                    query.delete(QueryParam.PriceMaxParam);
+                  } else {
+                    query.set(QueryParam.PriceMaxParam, newPriceMax);
+                  }
+                  changeURL();
                 }
-                changeURL();
               }}
               value={priceMax ? priceMax : ''}
             />
