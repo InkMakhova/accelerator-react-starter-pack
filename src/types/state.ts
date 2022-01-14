@@ -7,7 +7,6 @@ export type GuitarData = {
   priceMax: number,
   searchSuggestions: Guitar[];
   total: number;
-  page: number;
 }
 
 export type State = RootState;

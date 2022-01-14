@@ -13,7 +13,6 @@ const initialState: GuitarData = {
   priceMax: 0,
   searchSuggestions: [],
   total: 0,
-  page: 1,
 };
 
 const guitarData = createReducer(initialState, (builder) => {
