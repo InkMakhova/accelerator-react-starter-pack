@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Header correctly 1`] = `
+<div>
+  <header
+    class="header"
+    id="header"
+  >
+    <div
+      class="container header__wrapper"
+    >
+      <a
+        class="header__logo logo"
+        href="/"
+      >
+        <img
+          alt="Логотип"
+          class="logo__img"
+          height="70"
+          src="/img/svg/logo.svg"
+          width="70"
+        />
+      </a>
+      <nav
+        class="main-nav"
+      >
+        <ul
+          class="main-nav__list"
+        >
+          <li>
+            <a
+              class="link main-nav__link
+              link--current"
+              data-testid="catalog"
+              href="/"
+            >
+              Каталог
+            </a>
+          </li>
+          <li>
+            <a
+              class="link main-nav__link
+              "
+              data-testid="whereToBuy"
+              href="/where-to-buy"
+            >
+              Где купить?
+            </a>
+          </li>
+          <li>
+            <a
+              class="link main-nav__link
+              "
+              data-testid="aboutUs"
+              href="/about-us"
+            >
+              О компании
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div
+        class="form-search"
+      >
+        <form
+          class="form-search__form"
+        >
+          <button
+            class="form-search__submit"
+            type="submit"
+          >
+            <svg
+              aria-hidden="true"
+              class="form-search__icon"
+              height="15"
+              width="14"
+            >
+              <use
+                xlink:href="#icon-search"
+              />
+            </svg>
+            <span
+              class="visually-hidden"
+            >
+              Начать поиск
+            </span>
+          </button>
+          <input
+            autocomplete="off"
+            class="form-search__input"
+            data-testid="search"
+            id="search"
+            placeholder="что вы ищите?"
+            type="text"
+            value=""
+          />
+          <label
+            class="visually-hidden"
+            for="search"
+          >
+            Поиск
+          </label>
+        </form>
+        
+      </div>
+      <a
+        aria-label="Корзина"
+        class="header__cart-link"
+        data-testid="cart"
+        href="/cart"
+      >
+        <svg
+          aria-hidden="true"
+          class="header__cart-icon"
+          height="14"
+          width="14"
+        >
+          <use
+            xlink:href="#icon-basket"
+          />
+        </svg>
+        <span
+          class="visually-hidden"
+        >
+          Перейти в корзину
+        </span>
+        <span
+          class="header__cart-count"
+        >
+          2
+        </span>
+      </a>
+    </div>
+  </header>
+</div>
+`;
