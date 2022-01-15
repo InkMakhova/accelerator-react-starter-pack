@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { searchGuitarsAction } from '../../../../../store/api-actions';
-import { store } from '../../../../../index';
 import { Guitar } from '../../../../../types/guitar';
 import { useSelector } from 'react-redux';
 import { getSearchSuggestions } from '../../../../../store/guitar-data/selectors';
 import { useHistory } from 'react-router-dom';
 import { AppRoute } from '../../../../../const';
+import { store } from '../../../../../store/store';
 
 function Search(): JSX.Element {
   const history = useHistory();

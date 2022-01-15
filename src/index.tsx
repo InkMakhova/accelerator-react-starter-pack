@@ -1,22 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
-import {createAPI} from './services/api';
-import {configureStore} from '@reduxjs/toolkit';
-import {rootReducer} from './store/root-reducer';
-import {Provider} from 'react-redux';
-
-const api = createAPI();
-
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      thunk: {
-        extraArgument: api,
-      },
-    }),
-});
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 ReactDOM.render(
   <React.StrictMode>
