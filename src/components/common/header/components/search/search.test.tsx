@@ -5,44 +5,10 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import userEvent from '@testing-library/user-event';
 import Search from './search';
+import { mockSearchSuggestions } from '../../../../../mock/mock-search-suggestion';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
-const mockSearchSuggestions = [
-  {
-    id:2,
-    name:'Честер Plus',
-    vendorCode:'TK129049',
-    type:'electric',
-    description:'Эргономичность гитары',
-    previewImg:'img/guitar-8.jpg',
-    stringCount:7,
-    rating:3.5,
-    price:29500,
-  },
-  {
-    id:1,
-    name:'Честер Bass',
-    vendorCode:'TK129049',
-    type:'electric',
-    description:'Эргономичность гитары',
-    previewImg:'img/guitar-8.jpg',
-    stringCount:7,
-    rating:3.5,
-    price:29500,
-  },
-  {
-    id:3,
-    name:'Честер 6V',
-    vendorCode:'TK129049',
-    type:'electric',
-    description:'Эргономичность гитары',
-    previewImg:'img/guitar-8.jpg',
-    stringCount:7,
-    rating:3.5,
-    price:29500,
-  },
-];
 
 describe('Component: Search', () => {
   test('it displays search suggestions', async () => {
