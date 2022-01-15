@@ -46,6 +46,7 @@ function Sort(): JSX.Element {
             ${sort === SortType.Price ? 'catalog-sort__type-button--active' : ''}`
           }
           aria-label="по цене"
+          data-testid="by-price"
           tabIndex={sort === SortType.Price ? -1 : 0}
           onClick={() => {
             onClickHandler(SortType.Price, QueryParam.SortParam);
@@ -58,6 +59,7 @@ function Sort(): JSX.Element {
             ${sort === SortType.Rating ? 'catalog-sort__type-button--active' : ''}`
           }
           aria-label="по популярности"
+          data-testid="by-rating"
           tabIndex={sort === SortType.Rating ? -1 : 0}
           onClick={() => {
             onClickHandler(SortType.Rating, QueryParam.SortParam);
@@ -73,6 +75,7 @@ function Sort(): JSX.Element {
             ${order === Order.Asc ? 'catalog-sort__order-button--active' : ''}`
           }
           aria-label="По возрастанию"
+          data-testid="asc"
           tabIndex={order === Order.Asc ? -1 : 0}
           onClick={() => {
             onClickHandler(Order.Asc, QueryParam.OrderParam);
@@ -85,6 +88,7 @@ function Sort(): JSX.Element {
             ${order === Order.Desc ? 'catalog-sort__order-button--active' : ''}`
           }
           aria-label="По убыванию"
+          data-testid="desc"
           tabIndex={order === Order.Desc ? -1 : 0}
           onClick={() => {
             onClickHandler(Order.Desc, QueryParam.OrderParam);
