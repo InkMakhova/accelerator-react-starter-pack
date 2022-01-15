@@ -16,6 +16,7 @@ function Navigation({currentNavigationSection}: NavigationProps): JSX.Element {
               ${currentNavigationSection === NavigationSection.Catalog ? 'link--current' : ''}`
             }
             to={AppRoute.Root}
+            data-testid={NavigationSection.Catalog}
           >
             Каталог
           </Link>
@@ -27,6 +28,7 @@ function Navigation({currentNavigationSection}: NavigationProps): JSX.Element {
               ${currentNavigationSection === NavigationSection.WhereToBuy ? 'link--current' : ''}`
             }
             to={AppRoute.WhereToBuy}
+            data-testid={NavigationSection.WhereToBuy}
           >
             Где купить?
           </Link>
@@ -38,6 +40,7 @@ function Navigation({currentNavigationSection}: NavigationProps): JSX.Element {
               ${currentNavigationSection === NavigationSection.AboutUs ? 'link--current' : ''}`
             }
             to={AppRoute.AboutUs}
+            data-testid={NavigationSection.AboutUs}
           >
             О компании
           </Link>
