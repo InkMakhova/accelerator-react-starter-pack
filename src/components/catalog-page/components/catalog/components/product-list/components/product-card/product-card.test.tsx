@@ -12,7 +12,7 @@ describe('Component: ProductCard', () => {
   it('should render product card correctly', () => {
     render(
       <Router history={history}>
-        <ProductCard guitar={mockGuitar}/>
+        <ProductCard guitar={mockGuitar[0]}/>
       </Router>,
     );
     expect(screen.getByAltText('Честер Plus')).toBeInTheDocument();
@@ -29,7 +29,7 @@ describe('Component: ProductCard', () => {
             <h1>This is guitar page</h1>
           </Route>
           <Route>
-            <ProductCard guitar={mockGuitar}/>
+            <ProductCard guitar={mockGuitar[0]}/>
           </Route>
         </Switch>
       </Router>);
