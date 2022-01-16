@@ -35,6 +35,7 @@ function Pagination({totalPageNumber}: PaginationProps): JSX.Element {
               <Link
                 className="link pagination__page-link"
                 to={`${AppRoute.Catalog}${AppRoute.Page}${key}${location.search}`}
+                data-testid={key}
               >{key}
               </Link>
             </li>
@@ -55,6 +56,7 @@ function Pagination({totalPageNumber}: PaginationProps): JSX.Element {
               <Link
                 className="link pagination__page-link"
                 to={`${AppRoute.Catalog}${AppRoute.Page}${key}${location.search}`}
+                data-testid={key}
               >{key}
               </Link>
             </li>
@@ -72,6 +74,7 @@ function Pagination({totalPageNumber}: PaginationProps): JSX.Element {
             <Link
               className="link pagination__page-link"
               to={`${AppRoute.Catalog}${AppRoute.Page}${positionStart - 1}${location.search}`}
+              data-testid="prev"
             >Назад
             </Link>
           </li> : ''}
@@ -81,6 +84,7 @@ function Pagination({totalPageNumber}: PaginationProps): JSX.Element {
             <Link
               className="link pagination__page-link"
               to={`${AppRoute.Catalog}${AppRoute.Page}${positionEnd + 1}${location.search}`}
+              data-testid="next"
             >Вперед
             </Link>
           </li> : ''}
