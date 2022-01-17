@@ -18,11 +18,11 @@ import {
   fetchGuitarByAsc,
   fetchGuitarByDesc,
   fetchGuitarsAction } from '../../store/api-actions';
-import { store } from '../../index';
 import { useEffect, useRef } from 'react';
 import { useQuery } from '../../hooks/use-query';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getCurrentPage } from '../../util';
+import { store } from '../../store/store';
 
 document.title = PageTitle.Catalog;
 

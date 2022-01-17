@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render SocialMedia correctly 1`] = `
+<div>
+  <div
+    class="socials footer__socials"
+  >
+    <ul
+      class="socials__list"
+    >
+      <li
+        class="socials-item"
+      >
+        <a
+          aria-label="facebook"
+          class="socials__link"
+          href="https://www.facebook.com/"
+        >
+          <svg
+            aria-hidden="true"
+            class="socials__icon"
+            height="24"
+            width="24"
+          >
+            <use
+              xlink:href="#icon-facebook"
+            />
+          </svg>
+        </a>
+      </li>
+      <li
+        class="socials-item"
+      >
+        <a
+          aria-label="instagram"
+          class="socials__link"
+          href="https://www.instagram.com/"
+        >
+          <svg
+            aria-hidden="true"
+            class="socials__icon"
+            height="24"
+            width="24"
+          >
+            <use
+              xlink:href="#icon-instagram"
+            />
+          </svg>
+        </a>
+      </li>
+      <li
+        class="socials-item"
+      >
+        <a
+          aria-label="twitter"
+          class="socials__link"
+          href="https://www.twitter.com/"
+        >
+          <svg
+            aria-hidden="true"
+            class="socials__icon"
+            height="24"
+            width="24"
+          >
+            <use
+              xlink:href="#icon-twitter"
+            />
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Contacts correctly 1`] = `
+<div>
+  <section
+    class="footer__nav-section footer__nav-section--contacts"
+  >
+    <h2
+      class="footer__nav-title"
+    >
+      Контакты
+    </h2>
+    <p
+      class="footer__nav-content"
+    >
+      г. Санкт-Петербург,
+      <br />
+       м. Невский проспект, 
+      <br />
+      ул. Казанская 6.
+    </p>
+    <div
+      class="footer__nav-content"
+    >
+      <svg
+        aria-hidden="true"
+        class="footer__icon"
+        height="8"
+        width="8"
+      >
+        <use
+          xlink:href="#icon-phone"
+        />
+      </svg>
+      <a
+        class="link"
+        href="tel:88125005050"
+      >
+         8-812-500-50-50
+      </a>
+    </div>
+    <p
+      class="footer__nav-content"
+    >
+      Режим работы:
+      <br />
+      <span
+        class="footer__span"
+      >
+        <svg
+          aria-hidden="true"
+          class="footer__icon"
+          height="13"
+          width="13"
+        >
+          <use
+            xlink:href="#icon-clock"
+          />
+        </svg>
+        <span>
+           с 11:00 до 20:00
+        </span>
+        <span>
+          без выходных
+        </span>
+      </span>
+    </p>
+  </section>
+</div>
+`;

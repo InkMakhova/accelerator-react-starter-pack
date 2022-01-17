@@ -84,6 +84,7 @@ function Filter(): JSX.Element {
                 }
               }}
               value={priceMin ? priceMin : ''}
+              data-testid="min-price"
             />
           </div>
           <div className="form-input">
@@ -101,10 +102,10 @@ function Filter(): JSX.Element {
                 if (Number(newPriceMax) !== priceMaxPrev) {
                   if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
                     query.set(QueryParam.PriceMaxParam, String(theMostExpensivePrice));
-                  } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
-                    query.set(QueryParam.PriceMaxParam, String(theCheapestPrice));
                   } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
                     query.set(QueryParam.PriceMaxParam, String(priceMin));
+                  } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
+                    query.set(QueryParam.PriceMaxParam, String(theCheapestPrice));
                   } else if (newPriceMax === '') {
                     query.delete(QueryParam.PriceMaxParam);
                   } else {
@@ -114,6 +115,7 @@ function Filter(): JSX.Element {
                 }
               }}
               value={priceMax ? priceMax : ''}
+              data-testid="max-price"
             />
           </div>
         </div>
@@ -128,6 +130,7 @@ function Filter(): JSX.Element {
             name="acoustic"
             checked={type.includes(Type.Acoustic)}
             onChange={() => onChangeFilterHandler(type, Type.Acoustic, QueryParam.TypeParam)}
+            data-testid="acoustic"
           />
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
@@ -139,6 +142,7 @@ function Filter(): JSX.Element {
             name="electric"
             checked={type.includes(Type.Electric)}
             onChange={() => onChangeFilterHandler(type, Type.Electric, QueryParam.TypeParam)}
+            data-testid="electric"
           />
           <label htmlFor="electric">Электрогитары</label>
         </div>
@@ -150,6 +154,7 @@ function Filter(): JSX.Element {
             name="ukulele"
             checked={type.includes(Type.Ukulele)}
             onChange={() => onChangeFilterHandler(type, Type.Ukulele, QueryParam.TypeParam)}
+            data-testid="ukulele"
           />
           <label htmlFor="ukulele">Укулеле</label>
         </div>
@@ -166,6 +171,7 @@ function Filter(): JSX.Element {
             onChange={() =>
               onChangeFilterHandler(stringCount, String(StringCount.Four), QueryParam.StringCountParam)}
             disabled={!type.includes(Type.Ukulele) && !type.includes(Type.Electric) && type.includes(Type.Acoustic)}
+            data-testid="four"
           />
           <label htmlFor="4-strings">4</label>
         </div>
@@ -179,6 +185,7 @@ function Filter(): JSX.Element {
             onChange={() =>
               onChangeFilterHandler(stringCount, String(StringCount.Six), QueryParam.StringCountParam)}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
+            data-testid="six"
           />
           <label htmlFor="6-strings">6</label>
         </div>
@@ -192,6 +199,7 @@ function Filter(): JSX.Element {
             onChange={() =>
               onChangeFilterHandler(stringCount, String(StringCount.Seven), QueryParam.StringCountParam)}
             disabled={type.includes(Type.Ukulele) && !type.includes(Type.Electric) && !type.includes(Type.Acoustic)}
+            data-testid="seven"
           />
           <label htmlFor="7-strings">7</label>
         </div>
@@ -205,6 +213,7 @@ function Filter(): JSX.Element {
             onChange={() =>
               onChangeFilterHandler(stringCount, String(StringCount.Twelve), QueryParam.StringCountParam)}
             disabled={(type.includes(Type.Ukulele) || type.includes(Type.Electric)) && !type.includes(Type.Acoustic)}
+            data-testid="twelve"
           />
           <label htmlFor="12-strings">12</label>
         </div>

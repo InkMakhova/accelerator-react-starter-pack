@@ -22,6 +22,7 @@ function NotFoundPage(): JSX.Element {
           <Link
             to={AppRoute.Root}
             style={{fontWeight: 'bold', color: '#c90606', textDecoration: 'underline'}}
+            data-testid="go-back"
           >
             Вернуться в меню каталога
           </Link>

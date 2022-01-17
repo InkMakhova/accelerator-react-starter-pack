@@ -35,7 +35,12 @@ function ProductCard({guitar}: ProductCardProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <Link className="button button--mini" to={`${AppRoute.Guitars}${id}`}>Подробнее</Link>
+        <Link
+          className="button button--mini"
+          to={`${AppRoute.Guitars}${id}`}
+          data-testid="more"
+        >Подробнее
+        </Link>
         <Link
           className="button button--red button--mini button--add-to-cart"
           to={AppRoute.Cart}

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { searchGuitarsAction } from '../../../../../store/api-actions';
-import { store } from '../../../../../index';
 import { Guitar } from '../../../../../types/guitar';
 import { useSelector } from 'react-redux';
 import { getSearchSuggestions } from '../../../../../store/guitar-data/selectors';
 import { useHistory } from 'react-router-dom';
 import { AppRoute } from '../../../../../const';
+import { store } from '../../../../../store/store';
 
 function Search(): JSX.Element {
   const history = useHistory();
@@ -15,7 +15,11 @@ function Search(): JSX.Element {
   const showSearchSuggestions = (searchSuggestions: Guitar[]): JSX.Element => {
     if (searchSuggestions.length > 0) {
       return (
-        <ul className="form-search__select-list" style={{zIndex: '1'}}>
+        <ul
+          className="form-search__select-list"
+          style={{zIndex: '1'}}
+          data-testid="search-suggestion-list"
+        >
           {searchSuggestions.map((suggestion) => (
             <li
               className="form-search__select-item"
@@ -25,6 +29,7 @@ function Search(): JSX.Element {
                 history.push(`${AppRoute.Guitars}${suggestion.id}`);
                 setSearchValue('');
               }}
+              data-testid="search-suggestion-item"
             >
               {suggestion.name}
             </li>),
@@ -33,7 +38,11 @@ function Search(): JSX.Element {
       );
     }
     return (
-      <ul className="form-search__select-list hidden"></ul>
+      <ul
+        className="form-search__select-list hidden"
+        data-testid="search-suggestion-list"
+      >
+      </ul>
     );
   };
 
@@ -62,6 +71,7 @@ function Search(): JSX.Element {
           placeholder="что вы ищите?"
           value={searchValue}
           onChange={(evt) => setSearchValue(evt.target.value)}
+          data-testid="search"
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>

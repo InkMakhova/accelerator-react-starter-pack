@@ -47,8 +47,8 @@ export enum Sort {
 }
 
 export enum Order {
-  Asc = 'Asc',
-  Desc = 'Desc',
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 export enum Type {

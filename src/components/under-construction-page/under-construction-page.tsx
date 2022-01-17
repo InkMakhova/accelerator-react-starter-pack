@@ -23,6 +23,7 @@ function UnderConstructionPage({currentNavigationSection}: UnderConstructionPage
           <Link
             to={AppRoute.Root}
             style={{fontWeight: 'bold', color: '#c90606', textDecoration: 'underline'}}
+            data-testid="go-back"
           >
             Вернуться в меню каталога
           </Link>
