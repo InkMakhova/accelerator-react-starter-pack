@@ -6,5 +6,5 @@ export type FetchGuitarsParams = {
   order?: string | null,
   types?: string[] | null,
   stringCount?: string[],
-  limit: string;
+  limit?: string;
 }
