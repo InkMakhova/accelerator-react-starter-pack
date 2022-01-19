@@ -14,26 +14,38 @@ function Search(): JSX.Element {
 
   const showSearchSuggestions = (searchSuggestions: Guitar[]): JSX.Element => {
     if (searchSuggestions.length > 0) {
+      const suggestionsFromFirstLetter = searchSuggestions.filter((suggest) =>
+        suggest.name.toLowerCase().slice(0, searchValue.length) === searchValue.toLowerCase());
+
+      if (suggestionsFromFirstLetter.length > 0) {
+        return (
+          <ul
+            className="form-search__select-list"
+            style={{zIndex: '1'}}
+            data-testid="search-suggestion-list"
+          >
+            {suggestionsFromFirstLetter.map((suggestion) => (
+              <li
+                className="form-search__select-item"
+                tabIndex={0}
+                key={suggestion.id}
+                onClick ={() => {
+                  history.push(`${AppRoute.Guitars}${suggestion.id}`);
+                  setSearchValue('');
+                }}
+                data-testid="search-suggestion-item"
+              >
+                {suggestion.name}
+              </li>),
+            )}
+          </ul>
+        );
+      }
       return (
         <ul
-          className="form-search__select-list"
-          style={{zIndex: '1'}}
+          className="form-search__select-list hidden"
           data-testid="search-suggestion-list"
         >
-          {searchSuggestions.map((suggestion) => (
-            <li
-              className="form-search__select-item"
-              tabIndex={0}
-              key={suggestion.id}
-              onClick ={() => {
-                history.push(`${AppRoute.Guitars}${suggestion.id}`);
-                setSearchValue('');
-              }}
-              data-testid="search-suggestion-item"
-            >
-              {suggestion.name}
-            </li>),
-          )}
         </ul>
       );
     }
