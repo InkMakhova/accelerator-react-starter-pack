@@ -13,7 +13,7 @@ import {
 import { Guitar } from '../types/guitar';
 import { FetchGuitarsParams } from '../types/fetch-guitars-params';
 
-export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResult => {
+export const fetchGuitarsAction = (params: FetchGuitarsParams, handleError: () => void): ThunkActionResult => {
   const getQuery = (queryParams: FetchGuitarsParams): string => {
     const {
       start,
@@ -57,10 +57,13 @@ export const fetchGuitarsAction = (params: FetchGuitarsParams): ThunkActionResul
   };
 
   return async (dispatch, _getState, api): Promise<void> => {
-    const {data, headers} = await api
-      .get<Guitar[]>(`${APIRoute.Guitars}${getQuery(params).length === 0 ? '' : `?${getQuery(params)}`}`);
-    dispatch(loadGuitars(data));
-    dispatch(updateTotal(Number(headers['x-total-count'])));
+    api
+      .get<Guitar[]>(`${APIRoute.Guitars}${getQuery(params).length === 0 ? '' : `?${getQuery(params)}`}`)
+      .then(({data, headers, status}) => {
+        dispatch(loadGuitars(data));
+        dispatch(updateTotal(Number(headers['x-total-count'])));
+      })
+      .catch(() => handleError());
   };
 };
 

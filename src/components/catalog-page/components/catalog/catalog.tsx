@@ -9,9 +9,10 @@ import { getTotal } from '../../../../store/guitar-data/selectors';
 
 type CatalogProps = {
   guitars: Guitar[],
+  isServerError: boolean,
 }
 
-function Catalog({guitars}: CatalogProps): JSX.Element {
+function Catalog({guitars, isServerError}: CatalogProps): JSX.Element {
   const totalGuitarNumber = useSelector(getTotal);
 
   const totalPageNumber = Math.ceil(totalGuitarNumber / ITEMS_PER_PAGE);
@@ -20,7 +21,14 @@ function Catalog({guitars}: CatalogProps): JSX.Element {
     <div className="catalog">
       <Filter />
       <Sort />
-      <ProductList guitars={guitars} guitarCount={ITEMS_PER_PAGE} />
+      {isServerError ?
+        <div>
+          <p>Сервер на данный момент не доступен. Попробуйте зайти позже.</p>
+        </div> :
+        <ProductList
+          guitars={guitars}
+          guitarCount={ITEMS_PER_PAGE}
+        />}
       {totalPageNumber <= 1 ? '' : <Pagination totalPageNumber={totalPageNumber}/>}
     </div>
   );

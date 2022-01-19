@@ -18,7 +18,7 @@ describe('Component: Catalog', () => {
       })}
       >
         <Router history={history}>
-          <Catalog guitars={mockGuitar}/>
+          <Catalog guitars={mockGuitar} isServerError={false}/>
         </Router>
       </Provider>);
     expect(container).toMatchSnapshot();

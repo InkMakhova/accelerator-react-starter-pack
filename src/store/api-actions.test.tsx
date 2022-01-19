@@ -18,6 +18,7 @@ import {
 } from './action';
 import { mockGuitar } from '../mock/mock-guitar';
 import { mockSearchSuggestions } from '../mock/mock-search-suggestion';
+import {useState} from 'react';
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -37,9 +38,14 @@ describe('Async actions', () => {
       .onGet(APIRoute.Guitars)
       .reply(200, mockGuitars, {'x-total-count': 4});
 
-    const store = mockStore();
-    await store.dispatch(fetchGuitarsAction({}));
+    const [isServerError, setIsServerError] = useState(false);
 
+    const handleError = () => setIsServerError(true);
+
+    const store = mockStore();
+    await store.dispatch(fetchGuitarsAction({}, handleError));
+
+    expect(isServerError).toBe(false);
     expect(store.getActions()).toEqual([loadGuitars(mockGuitars), updateTotal(4)]);
   });
 

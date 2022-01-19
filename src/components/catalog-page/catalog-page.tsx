@@ -18,7 +18,7 @@ import {
   fetchGuitarByAsc,
   fetchGuitarByDesc,
   fetchGuitarsAction } from '../../store/api-actions';
-import { useEffect, useRef } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { useQuery } from '../../hooks/use-query';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getCurrentPage } from '../../util';
@@ -30,6 +30,10 @@ function CatalogPage(): JSX.Element {
   const query = useQuery();
   const location = useLocation();
   const history = useHistory();
+
+  const [isServerError, setIsServerError] = useState(false);
+
+  const handleError = () => setIsServerError(true);
 
   if (!location.pathname.includes(AppRoute.Catalog)) {
     location.pathname = `${AppRoute.Catalog}${AppRoute.Page}1`;
@@ -107,7 +111,7 @@ function CatalogPage(): JSX.Element {
         sort,
         order,
         start,
-        limit}));
+        limit}, handleError));
     /*eslint-disable-next-line*/
   }, [priceMin, priceMax, typesRef.current, stringsCountRef.current, sort, order, start, limit]);
 
@@ -121,7 +125,7 @@ function CatalogPage(): JSX.Element {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <BreadCrumbs />
-          <Catalog guitars={guitars}/>
+          <Catalog guitars={guitars} isServerError={isServerError}/>
         </div>
       </main>
 
