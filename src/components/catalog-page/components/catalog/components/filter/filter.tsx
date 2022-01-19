@@ -71,14 +71,19 @@ function Filter(): JSX.Element {
                 if (Number(newPriceMin) !== priceMinPrev) {
                   if (Number(newPriceMin) < theCheapestPrice && newPriceMin !== '') {
                     query.set(QueryParam.PriceMinParam, String(theCheapestPrice));
+                    setPriceMin(String(theCheapestPrice));
                   } else if (Number(newPriceMin) > theMostExpensivePrice) {
                     query.set(QueryParam.PriceMinParam, String(theMostExpensivePrice));
+                    setPriceMin(String(theMostExpensivePrice));
                   } else if (Number(priceMax) && Number(newPriceMin) > Number(priceMax)) {
                     query.set(QueryParam.PriceMinParam, String(priceMax));
+                    setPriceMin(String(priceMax));
                   } else if (newPriceMin === '') {
                     query.delete(QueryParam.PriceMinParam);
+                    setPriceMin('');
                   } else {
                     query.set(QueryParam.PriceMinParam, newPriceMin);
+                    setPriceMin(newPriceMin);
                   }
                   changeURL();
                 }
@@ -102,14 +107,19 @@ function Filter(): JSX.Element {
                 if (Number(newPriceMax) !== priceMaxPrev) {
                   if (Number(newPriceMax) > theMostExpensivePrice && newPriceMax !== '') {
                     query.set(QueryParam.PriceMaxParam, String(theMostExpensivePrice));
+                    setPriceMax(String(theMostExpensivePrice));
                   } else if (Number(priceMin) && Number(newPriceMax) < Number(priceMin) && newPriceMax !== '') {
                     query.set(QueryParam.PriceMaxParam, String(priceMin));
+                    setPriceMax(String(priceMin));
                   } else if (Number(newPriceMax) < theCheapestPrice && newPriceMax !== '') {
                     query.set(QueryParam.PriceMaxParam, String(theCheapestPrice));
+                    setPriceMax(String(theCheapestPrice));
                   } else if (newPriceMax === '') {
                     query.delete(QueryParam.PriceMaxParam);
+                    setPriceMax('');
                   } else {
                     query.set(QueryParam.PriceMaxParam, newPriceMax);
+                    setPriceMax(newPriceMax);
                   }
                   changeURL();
                 }
